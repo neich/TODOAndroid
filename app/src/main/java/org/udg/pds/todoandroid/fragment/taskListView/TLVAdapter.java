@@ -39,8 +39,8 @@ public class TLVAdapter extends ArrayAdapter<Task> {
         	vi = mInflater.inflate(R.layout.task_layout, null);
         }
         //Get the text boxes
-        TextView tvDateL =(TextView)vi.findViewById(R.id.taskitem_date_limit);
-        TextView tvText =(TextView)vi.findViewById(R.id.taskitem_title);
+        TextView tvDateL =(TextView)vi.findViewById(R.id.itemDateLimit);
+        TextView tvText =(TextView)vi.findViewById(R.id.itemDescription);
          
         // Assign the appropriate data from our task object above
         tvDateL.setText(Global.TIME_DATE_FORMAT.format(t.dateLimit));

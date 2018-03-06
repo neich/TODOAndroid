@@ -34,7 +34,7 @@ public class TRAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
   @Override
   public void onBindViewHolder(TaskViewHolder holder, final int position) {
-    holder.title.setText(list.get(position).text);
+    holder.description.setText(list.get(position).text);
     holder.dateLimit.setText(list.get(position).dateLimit.toString());
 
     holder.view.setOnClickListener(new View.OnClickListener() {

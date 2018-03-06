@@ -9,15 +9,15 @@ import org.udg.pds.todoandroid.R;
  * Created by imartin on 12/02/16.
  */
 public class TaskViewHolder extends RecyclerView.ViewHolder {
-  TextView title;
+  TextView description;
   TextView dateLimit;
   View view;
 
   TaskViewHolder(View itemView) {
     super(itemView);
     view = itemView;
-    title = (TextView) itemView.findViewById(R.id.taskitem_title);
-    dateLimit = (TextView) itemView.findViewById(R.id.taskitem_date_limit);
+    description = (TextView) itemView.findViewById(R.id.itemDescription);
+    dateLimit = (TextView) itemView.findViewById(R.id.itemDateLimit);
 
 
   }
