@@ -1,5 +1,6 @@
 package org.udg.pds.todoandroid.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -60,4 +61,18 @@ public class Login extends Fragment {
                     + " must implement OnLoginListener");
         }
     }
+
+    @Override
+    public void onAttach(Activity ctx) {
+        super.onAttach(ctx);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnLoginListener) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must implement OnLoginListener");
+        }
+    }
+
 }

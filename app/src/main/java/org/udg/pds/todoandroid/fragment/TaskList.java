@@ -1,5 +1,6 @@
 package org.udg.pds.todoandroid.fragment;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
@@ -27,6 +28,20 @@ public abstract class TaskList extends Fragment {
           + " must implement OnTaskListListener");
     }
   }
+
+  @Override
+  public void onAttach(Activity ctx) {
+    super.onAttach(ctx);
+    // This makes sure that the container activity has implemented
+    // the callback interface. If not, it throws an exception
+    try {
+      mCallback = (TaskList.OnTaskListListener) getActivity();
+    } catch (ClassCastException e) {
+      throw new ClassCastException(getActivity().toString()
+              + " must implement OnTaskListListener");
+    }
+  }
+
 
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
