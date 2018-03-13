@@ -150,7 +150,7 @@ public class AddTask extends Activity implements Callback<Task> {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.act_add_task);
+    setContentView(R.layout.add_task);
 
     mTodoService = ((TodoApp)this.getApplication()).getAPI();
 
