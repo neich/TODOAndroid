@@ -11,4 +11,5 @@ public class Task {
   public Date dateLimit;
   public Date dateCreated;
   public Boolean completed;
+  public Long userId;
 }
