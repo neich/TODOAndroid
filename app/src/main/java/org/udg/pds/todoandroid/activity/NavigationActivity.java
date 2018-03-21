@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
+import org.udg.pds.todoandroid.fragment.FavoritesFragment;
 import org.udg.pds.todoandroid.rest.TodoApi;
 
 // FragmentActivity is a base class for activities that want to use the support-based Fragment and Loader APIs.
@@ -57,15 +58,10 @@ public class NavigationActivity extends AppCompatActivity {
     switch (itemId) {
       case R.id.action_favorites:
         content.removeAllViews();
-        getLayoutInflater().inflate(R.layout.content_favorites, content);
-        Button button = (Button)findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            Intent i = new Intent(NavigationActivity.this, NDActivity.class);
-            startActivity(i);
-          }
-        });
+        getFragmentManager()
+            .beginTransaction()
+            .replace(R.id.main_content, new FavoritesFragment())
+            .commit();
         break;
       case R.id.action_schedules:
         content.removeAllViews();
