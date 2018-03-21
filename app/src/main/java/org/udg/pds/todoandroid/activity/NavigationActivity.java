@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -14,7 +15,7 @@ import org.udg.pds.todoandroid.rest.TodoApi;
 
 // FragmentActivity is a base class for activities that want to use the support-based Fragment and Loader APIs.
 // http://developer.android.com/reference/android/support/v4/app/FragmentActivity.html
-public class NavigationActivity extends Activity {
+public class NavigationActivity extends AppCompatActivity {
 
   private TaskList mTaskList;
 

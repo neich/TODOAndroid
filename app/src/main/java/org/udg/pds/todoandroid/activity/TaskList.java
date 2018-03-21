@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * Created by imartin on 12/02/16.
  */
-public class TaskList extends Activity {
+public class TaskList extends AppCompatActivity {
 
   TodoApi mTodoService;
 

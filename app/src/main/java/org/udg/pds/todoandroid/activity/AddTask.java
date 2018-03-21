@@ -4,6 +4,7 @@ import android.app.*;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.*;
@@ -28,7 +29,7 @@ import java.util.Date;
  */
 
 // Fragment used to create a new task
-public class AddTask extends Activity implements Callback<Task> {
+public class AddTask extends AppCompatActivity implements Callback<Task> {
 
   TodoApi mTodoService;
 
