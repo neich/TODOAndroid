@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import org.udg.pds.todoandroid.R;
@@ -56,6 +58,14 @@ public class NavigationActivity extends AppCompatActivity {
       case R.id.action_favorites:
         content.removeAllViews();
         getLayoutInflater().inflate(R.layout.content_favorites, content);
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            Intent i = new Intent(NavigationActivity.this, NDActivity.class);
+            startActivity(i);
+          }
+        });
         break;
       case R.id.action_schedules:
         content.removeAllViews();
