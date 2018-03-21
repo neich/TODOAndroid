@@ -102,29 +102,31 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 25 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="Gradle: okhttp-3.9.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: gson-2.8.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: logging-interceptor-3.9.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: recyclerview-v7-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-core-ui-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: cardview-v7-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-media-compat-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: design-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: converter-gson-2.3.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: animated-vector-drawable-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: appcompat-v7-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-v4-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: transition-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: jackson-annotations-2.8.0" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: okio-1.13.0" level="project" />
     <orderEntry type="library" exported="" name="Gradle: okhttp-urlconnection-3.9.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-fragment-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: jackson-core-2.8.6" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: retrofit-2.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: constraint-layout-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-vector-drawable-25.3.1" level="project" />
-    <orderEntry type="library" exported="" name="Gradle: jackson-databind-2.8.6" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: constraint-layout-solver-1.0.2" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-compat-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-core-utils-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: okhttp-3.9.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gson-2.8.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: cardview-v7-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: design-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: transition-25.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: okio-1.13.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: retrofit-2.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-core-2.8.6" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-databind-2.8.6" level="project" />
     <orderEntry type="library" exported="" name="Gradle: support-annotations-25.3.1" level="project" />
     <orderEntry type="library" exported="" name="Gradle: org.apache.http.legacy-android-25" level="project" />
   </component>
