@@ -26,37 +26,39 @@ public class NavigationActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
 
-    mTodoService = ((TodoApp)this.getApplication()).getAPI();
+    mTodoService = ((TodoApp) this.getApplication()).getAPI();
 
     final FrameLayout content = (FrameLayout) findViewById(R.id.main_content);
     BottomNavigationView bottomNavigationView = (BottomNavigationView)
-            findViewById(R.id.bottom_navigation);
+        findViewById(R.id.bottom_navigation);
 
     bottomNavigationView.setOnNavigationItemSelectedListener(
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-              @Override
-              public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                  case R.id.action_favorites:
-                      content.removeAllViews();
-                      getLayoutInflater().inflate(R.layout.content_favorites, content);
-                      break;
-                  case R.id.action_schedules:
-                      content.removeAllViews();
-                      getLayoutInflater().inflate(R.layout.content_schedules, content);
-                      break;
-                  case R.id.action_tasks:
-                    NavigationActivity.this.startActivity(new Intent(NavigationActivity.this, TaskList.class));
-                }
-                return true;
-              }
-            });
+        new BottomNavigationView.OnNavigationItemSelectedListener() {
+          @Override
+          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+              case R.id.action_tasks:
+                NavigationActivity.this.startActivity(new Intent(NavigationActivity.this, TaskList.class));
+                break;
+              default:
+                switchView(item.getItemId());
+            }
+            return true;
+          }
+        });
 
-    switch (bottomNavigationView.getSelectedItemId()) {
+    switchView(bottomNavigationView.getSelectedItemId());
+  }
+
+  void switchView(int itemId) {
+    final FrameLayout content = (FrameLayout) findViewById(R.id.main_content);
+    switch (itemId) {
       case R.id.action_favorites:
+        content.removeAllViews();
         getLayoutInflater().inflate(R.layout.content_favorites, content);
         break;
       case R.id.action_schedules:
+        content.removeAllViews();
         getLayoutInflater().inflate(R.layout.content_schedules, content);
         break;
       case R.id.action_tasks:
