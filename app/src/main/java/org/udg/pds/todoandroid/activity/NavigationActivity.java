@@ -53,7 +53,7 @@ public class NavigationActivity extends AppCompatActivity {
     switchView(bottomNavigationView.getSelectedItemId());
   }
 
-  void switchView(int itemId) {
+  private void switchView(int itemId) {
     final FrameLayout content = (FrameLayout) findViewById(R.id.main_content);
     switch (itemId) {
       case R.id.action_favorites:
