@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 
 import android.widget.Button;
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.activity.NDActivity;
-import org.udg.pds.todoandroid.activity.NavigationActivity;
+import org.udg.pds.todoandroid.activity.NavDrawerActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,7 +32,7 @@ public class FavoritesFragment extends Fragment {
     button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent i = new Intent(FavoritesFragment.this.getActivity(), NDActivity.class);
+        Intent i = new Intent(FavoritesFragment.this.getActivity(), NavDrawerActivity.class);
         startActivity(i);
       }
     });

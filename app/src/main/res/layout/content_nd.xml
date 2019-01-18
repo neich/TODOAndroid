@@ -7,6 +7,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_nd"
-        tools:context="org.udg.pds.todoandroid.activity.NDActivity">
+        tools:context="org.udg.pds.todoandroid.activity.NavDrawerActivity">
 
 </android.support.constraint.ConstraintLayout>
