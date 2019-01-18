@@ -61,6 +61,7 @@ public class Login extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Login.this.startActivity(new Intent(Login.this, NavigationActivity.class));
+                    Login.this.finish();
                 } else {
                     Toast toast = Toast.makeText(Login.this, "Error logging in", Toast.LENGTH_SHORT);
                     toast.show();
