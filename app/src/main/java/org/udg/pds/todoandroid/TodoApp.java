@@ -23,29 +23,30 @@ public class TodoApp extends Application {
 
   @Override
   public void onCreate() {
+    super.onCreate();
+
     HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
     interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-    OkHttpClient client = new OkHttpClient(); //create OKHTTPClient
-
     ClearableCookieJar cookieJar =
-        new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
+            new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(this));
 
     OkHttpClient httpClient = new OkHttpClient.Builder()
-        .cookieJar(cookieJar)
-        .addInterceptor(interceptor)
-        .build();
+            .cookieJar(cookieJar)
+            .addInterceptor(interceptor)
+            .build();
 
     Gson gson = new GsonBuilder()
-        .setLenient()
-        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        .create();
+            .setLenient()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            .create();
 
     Retrofit retrofit = new Retrofit.Builder()
-        .client(httpClient)
-        .baseUrl(Global.BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create(gson))
-        .build();
+            .client(httpClient)
+            //.baseUrl(Global.BASE_URL_PORTFORWARDING)
+            .baseUrl(Global.BASE_URL_GENYMOTION)
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build();
 
     mTodoService = retrofit.create(TodoApi.class);
   }
