@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.*;
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
+import org.udg.pds.todoandroid.entity.IdObject;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
@@ -29,7 +30,7 @@ import java.util.Date;
  */
 
 // Fragment used to create a new task
-public class AddTask extends AppCompatActivity implements Callback<Task> {
+public class AddTask extends AppCompatActivity implements Callback<IdObject> {
 
   TodoApi mTodoService;
 
@@ -67,7 +68,7 @@ public class AddTask extends AppCompatActivity implements Callback<Task> {
   };
 
   @Override
-  public void onResponse(Call<Task> call, Response<Task> response) {
+  public void onResponse(Call<IdObject> call, Response<IdObject> response) {
     if (response.isSuccessful()) {
       finish();
     } else {
@@ -76,7 +77,7 @@ public class AddTask extends AppCompatActivity implements Callback<Task> {
   }
 
   @Override
-  public void onFailure(Call<Task> call, Throwable t) {
+  public void onFailure(Call<IdObject> call, Throwable t) {
 
   }
 
@@ -192,7 +193,7 @@ public class AddTask extends AppCompatActivity implements Callback<Task> {
           task.text = text;
           task.dateLimit = dateLimit;
           task.dateCreated = new Date();
-          Call<Task> call = mTodoService.addTask(task);
+          Call<IdObject> call = mTodoService.addTask(task);
           call.enqueue(AddTask.this);
         } catch (Exception ex) {
           return;
