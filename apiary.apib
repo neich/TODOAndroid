@@ -3,14 +3,34 @@ HOST: http://example.com/
 
 # Exemple PDS
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+This is the API blueprint of the implementation https://github.com/neich/TODOSpring
 
-## Tasks Collection [/users/check]
-### List All Tasks [GET]
+## Check user [/users/check]
+### Check is user is logged in [GET]
 
-+ Response 501 (application/json)
++ Response 200 (application/json)
 
-        "hola"
+        "ok"
+
+## Login [/users/login]
+### Login [POST]
+
++ Request (application/json)
+
+        {
+            "username": "usuari",
+            "password": "123456"
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "username": "usuari",
+                "email": "jo@hotmail.com"
+            }
 
 ## Tasks Collection [/tasks]
 
@@ -36,10 +56,6 @@ Polls is a simple API allowing consumers to view polls and vote in them.
         ]
 
 ### Create a New Task [POST]
-
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
 
 + Request (application/json)
 
@@ -82,6 +98,9 @@ form of choices.
 + Response 500 (application/json)
 
         {
-            "type": "EJB error",
-            "message": "Task does not exists"
+            "timestamp": "2019-02-28T19:17:34.311+0000",
+            "status": 500,
+            "error": "Internal Server Error",
+            "message": "No class org.udg.pds.springtodo.entity.Task entity with id 3 exists!",
+            "path": "/tasks/3"
         }
