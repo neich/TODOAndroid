@@ -32,7 +32,7 @@ This is the API blueprint of the implementation https://github.com/neich/TODOSpr
                 "email": "jo@hotmail.com"
             }
 
-## Tasks Collection [/tasks]
+## Operations with task collections [/tasks]
 
 ### List All Tasks [GET]
 
@@ -77,23 +77,23 @@ This is the API blueprint of the implementation https://github.com/neich/TODOSpr
                 "text": "Una tasca"
             }
 
-## Task [/tasks/1]
+## Get task with id = 1 [/tasks/1]
 
-### Get Task [GET]
+### Get task with id = 1 [GET]
 
 + Response 200 (application/json)
 
         {
             "id": 1,
-        "dateCreated": "2018-01-01T00:00:00",
-        "dateLimit": "2018-03-01T00:00:00",
-        "completed": false,
-        "text": "Una tasca"
+            "dateCreated": "2018-01-01T00:00:00",
+            "dateLimit": "2018-03-01T00:00:00",
+            "completed": false,
+            "text": "Una tasca"
         }
         
-## Task [/tasks/3]
 
-### Get Task [GET]
+## Get task with id = 3 ERROR [/tasks/3]
+### Get task with id = 3 ERROR [GET]
 
 + Response 500 (application/json)
 
