@@ -1,18 +1,23 @@
 package org.udg.pds.todoandroid;
 
 import android.app.Application;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
 import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
+
+import java.text.SimpleDateFormat;
+
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
+
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
 
 /**
  * Created by imartin on 13/02/17.
@@ -36,16 +41,16 @@ public class TodoApp extends Application {
             .addInterceptor(interceptor)
             .build();
 
-    Gson gson = new GsonBuilder()
-            .setLenient()
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-            .create();
+      ObjectMapper jacksonMapper =
+          new ObjectMapper()
+              .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
+              .setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
 
     Retrofit retrofit = new Retrofit.Builder()
             .client(httpClient)
             .baseUrl(Global.BASE_URL_PORTFORWARDING)
             //.baseUrl(Global.BASE_URL_GENYMOTION)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(JacksonConverterFactory.create(jacksonMapper))
             .build();
 
     mTodoService = retrofit.create(TodoApi.class);
