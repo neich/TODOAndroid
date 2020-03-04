@@ -8,14 +8,14 @@ import java.util.Date;
 /**
  * Created by imartin on 12/02/16.
  */
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class,
-    property="id", scope = Task.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+    property = "id", scope = Task.class)
 
 public class Task {
-  public Long id;
-  public String text;
-  public Date dateLimit;
-  public Date dateCreated;
-  public Boolean completed;
-  public Long userId;
+    public Long id;
+    public String text;
+    public Date dateLimit;
+    public Date dateCreated;
+    public Boolean completed;
+    public Long userId;
 }
