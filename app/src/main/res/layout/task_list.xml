@@ -14,7 +14,7 @@
       android:text="Add task"
       android:id="@+id/b_add_task_rv"/>
 
-  <android.support.v7.widget.RecyclerView
+  <androidx.recyclerview.widget.RecyclerView
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/task_recyclerview"
       android:layout_width="match_parent"
