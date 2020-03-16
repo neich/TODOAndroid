@@ -1,22 +1,29 @@
-package org.udg.pds.todoandroid.activity;
+package org.udg.pds.todoandroid.fragment;
 
 import android.app.DatePickerDialog;
+import androidx.fragment.app.DialogFragment;
+
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
@@ -41,7 +48,7 @@ import retrofit2.Response;
  */
 
 // Fragment used to create a new task
-public class AddTask extends AppCompatActivity implements Callback<IdObject> {
+public class AddTaskFragment extends Fragment implements Callback<IdObject> {
 
     TodoApi mTodoService;
 
@@ -52,7 +59,7 @@ public class AddTask extends AppCompatActivity implements Callback<IdObject> {
             Bundle b = msg.getData();
             Integer hour = b.getInt("hour");
             Integer minute = b.getInt("minute");
-            TextView tl = findViewById(R.id.at_time_limit);
+            TextView tl = AddTaskFragment.this.getView().findViewById(R.id.at_time_limit);
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.HOUR, hour);
             cal.set(Calendar.MINUTE, minute);
@@ -69,7 +76,7 @@ public class AddTask extends AppCompatActivity implements Callback<IdObject> {
             Integer month = b.getInt("month");
             Integer year = b.getInt("year");
 
-            TextView tl = findViewById(R.id.at_date_limit);
+            TextView tl = AddTaskFragment.this.getView().findViewById(R.id.at_date_limit);
             Calendar cal = Calendar.getInstance();
             cal.set(Calendar.DAY_OF_MONTH, day);
             cal.set(Calendar.MONTH, month);
@@ -81,9 +88,12 @@ public class AddTask extends AppCompatActivity implements Callback<IdObject> {
     @Override
     public void onResponse(Call<IdObject> call, Response<IdObject> response) {
         if (response.isSuccessful()) {
-            finish();
+            NavDirections action =
+                AddTaskFragmentDirections
+                    .actionAddTaskFragmentToActionTasks();
+            NavHostFragment.findNavController(this).navigate(action);
         } else {
-            Toast.makeText(this, "Error adding task", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getContext(), "Error adding task", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -161,41 +171,43 @@ public class AddTask extends AppCompatActivity implements Callback<IdObject> {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_task);
+        View root = inflater.inflate(R.layout.add_task, container, false);
 
-        mTodoService = ((TodoApp) this.getApplication()).getAPI();
 
-        FragmentManager fm = getFragmentManager();
+        mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
 
-        Button timeButton = findViewById(R.id.at_time_limit_button);
+        FragmentManager fm = getParentFragmentManager();
+
+        Button timeButton = root.findViewById(R.id.at_time_limit_button);
         // Show the time selection dialog when the "Set" button is pressed
         timeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 TimePickerFragment dialog = new TimePickerFragment();
                 dialog.setHandler(mHandlerT);
-                dialog.show(getFragmentManager(), "timepickerdialog");
+                dialog.show(getParentFragmentManager(), "timepickerdialog");
             }
         });
 
-        Button dateButton = findViewById(R.id.at_date_limit_button);
+        Button dateButton = root.findViewById(R.id.at_date_limit_button);
         // Show the date selection dialog when the "Set" button is pressed
         dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 DatePickerFragment dialog = new DatePickerFragment();
                 dialog.setHandler(mHandlerD);
-                dialog.show(getFragmentManager(), "timepickerdialog");
+                dialog.show(getParentFragmentManager(), "timepickerdialog");
             }
         });
 
-        Button save = findViewById(R.id.at_save_button);
+        Button save = root.findViewById(R.id.at_save_button);
         // When the "Save" button is pressed, we make the call to the responder
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TextView datev = findViewById(R.id.at_date_limit);
-                TextView timev = findViewById(R.id.at_time_limit);
-                TextView textv = findViewById(R.id.at_text);
+                TextView datev = root.findViewById(R.id.at_date_limit);
+                TextView timev = root.findViewById(R.id.at_time_limit);
+                TextView textv = root.findViewById(R.id.at_text);
 
                 try {
                     Date dateLimit = Global.TIME_DATE_FORMAT.parse(datev.getText().toString() + " " + timev.getText().toString());
@@ -205,7 +217,7 @@ public class AddTask extends AppCompatActivity implements Callback<IdObject> {
                     task.dateLimit = dateLimit;
                     task.dateCreated = new Date();
                     Call<IdObject> call = mTodoService.addTask(task);
-                    call.enqueue(AddTask.this);
+                    call.enqueue(AddTaskFragment.this);
                 } catch (Exception ex) {
                     return;
                 }
@@ -213,5 +225,6 @@ public class AddTask extends AppCompatActivity implements Callback<IdObject> {
             }
         });
 
+        return root;
     }
 }
