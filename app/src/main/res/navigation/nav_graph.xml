@@ -3,18 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/action_favorites">
+    app:startDestination="@id/action_home">
 
     <fragment
-        android:id="@+id/action_favorites"
+        android:id="@+id/action_home"
         android:name="org.udg.pds.todoandroid.fragment.FavoritesFragment"
         android:label="content_favorites"
-        tools:layout="@layout/content_favorites" >
-        <action
-            android:id="@+id/action_action_favorites_to_action_schedules"
-            app:destination="@id/action_schedules"
-            app:enterAnim="@anim/nav_default_enter_anim" />
-    </fragment>
+        tools:layout="@layout/content_favorites" />
     <fragment
         android:id="@+id/action_tasks"
         android:name="org.udg.pds.todoandroid.fragment.TaskList"
@@ -26,15 +21,10 @@
             app:enterAnim="@anim/nav_default_pop_enter_anim" />
     </fragment>
     <fragment
-        android:id="@+id/action_schedules"
-        android:name="org.udg.pds.todoandroid.fragment.SchedulesFragment"
+        android:id="@+id/action_image"
+        android:name="org.udg.pds.todoandroid.fragment.ImageFragment"
         android:label="fragment_schedules"
-        tools:layout="@layout/fragment_schedules" >
-        <action
-            android:id="@+id/action_action_schedules_to_action_tasks"
-            app:destination="@id/action_tasks"
-            app:enterAnim="@anim/nav_default_enter_anim" />
-    </fragment>
+        tools:layout="@layout/fragment_image" />
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="org.udg.pds.todoandroid.fragment.AddTaskFragment"

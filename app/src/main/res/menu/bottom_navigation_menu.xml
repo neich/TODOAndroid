@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_favorites"
+            android:id="@+id/action_home"
             android:enabled="true"
-            android:icon="@drawable/ic_favorite_white_24dp"
-            android:title="@string/text_favorites"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/text_home"
             app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/action_schedules"
+            android:id="@+id/action_image"
             android:checked="true"
             android:enabled="true"
-            android:icon="@drawable/ic_schedule_white_24dp"
-            android:title="@string/text_schedules"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="@string/text_image"
             app:showAsAction="ifRoom" />
     <item
             android:id="@+id/action_tasks"
