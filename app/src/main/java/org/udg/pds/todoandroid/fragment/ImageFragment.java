@@ -14,11 +14,11 @@ import android.webkit.MimeTypeMap;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.io.IOUtils;
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
-import org.udg.pds.todoandroid.activity.Login;
-import org.udg.pds.todoandroid.entity.IdObject;
 import org.udg.pds.todoandroid.rest.TodoApi;
 
 import java.io.File;
@@ -37,8 +37,10 @@ import retrofit2.Response;
  */
 public class ImageFragment extends Fragment {
 
-    ImageView iv;
+    ImageView ivSelected;
+    ImageView ivDownloaded;
     Uri selectedImage = null;
+
 
     TodoApi mTodoService;
 
@@ -62,7 +64,8 @@ public class ImageFragment extends Fragment {
 
         View root = this.getView();
 
-        iv = root.findViewById(R.id.iv_preview);
+        ivSelected = root.findViewById(R.id.iv_preview);
+        ivDownloaded = root.findViewById(R.id.iv_download);
 
         root.findViewById(R.id.b_select_image).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +102,10 @@ public class ImageFragment extends Fragment {
                         call.enqueue(new Callback<String>() {
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
-                                if (response.isSuccessful())
+                                if (response.isSuccessful()) {
                                     Toast.makeText(getContext(), "Image uploaded OK !!", Toast.LENGTH_SHORT).show();
+                                    Picasso.get().load(response.body()).into(ImageFragment.this.ivDownloaded);
+                                }
                                 else
                                     Toast.makeText(getContext(), "Response error !", Toast.LENGTH_SHORT).show();
                             }
@@ -121,11 +126,12 @@ public class ImageFragment extends Fragment {
 
     }
 
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (data != null && requestCode==1){
             selectedImage = data.getData();
-            iv.setImageURI(selectedImage);
+            ivSelected.setImageURI(selectedImage);
         }
     }
 
