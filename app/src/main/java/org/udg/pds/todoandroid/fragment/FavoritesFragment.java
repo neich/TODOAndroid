@@ -1,13 +1,16 @@
 package org.udg.pds.todoandroid.fragment;
 
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.activity.NavDrawerActivity;
@@ -32,8 +35,8 @@ public class FavoritesFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(FavoritesFragment.this.getActivity(), NavDrawerActivity.class);
-                startActivity(i);
+                NavDirections action = FavoritesFragmentDirections.actionActionHomeToNavDrawerActivity();
+                Navigation.findNavController(view).navigate(action);
             }
         });
         return root;

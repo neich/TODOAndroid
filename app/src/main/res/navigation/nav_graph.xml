@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/action_home">
+
+    <fragment
+        android:id="@+id/action_home"
+        android:name="org.udg.pds.todoandroid.fragment.FavoritesFragment"
+        android:label="content_favorites"
+        tools:layout="@layout/content_favorites" >
+        <action
+            android:id="@+id/action_action_home_to_navDrawerActivity"
+            app:destination="@id/navDrawerActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/action_tasks"
+        android:name="org.udg.pds.todoandroid.fragment.TaskList"
+        android:label="task_list"
+        tools:layout="@layout/task_list" >
+        <action
+            android:id="@+id/action_action_tasks_to_addTaskFragment"
+            app:destination="@id/addTaskFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/action_image"
+        android:name="org.udg.pds.todoandroid.fragment.ImageFragment"
+        android:label="fragment_schedules"
+        tools:layout="@layout/fragment_image" />
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="org.udg.pds.todoandroid.fragment.AddTaskFragment"
+        android:label="add_task"
+        tools:layout="@layout/add_task" >
+        <action
+            android:id="@+id/action_addTaskFragment_to_action_tasks"
+            app:destination="@id/action_tasks" />
+    </fragment>
+    <activity
+        android:id="@+id/navDrawerActivity"
+        android:name="org.udg.pds.todoandroid.activity.NavDrawerActivity"
+        android:label="content_nd"
+        tools:layout="@layout/content_nd" />
+</navigation>

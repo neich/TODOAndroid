@@ -7,10 +7,13 @@ import org.udg.pds.todoandroid.entity.UserLogin;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 /**
@@ -31,6 +34,10 @@ public interface TodoApi {
 
     @GET("/tasks/{id}")
     Call<Task> getTask(@Path("id") String id);
+
+    @POST("/images")
+    @Multipart
+    Call<String> uploadImage(@Part MultipartBody.Part file);
 
 }
 

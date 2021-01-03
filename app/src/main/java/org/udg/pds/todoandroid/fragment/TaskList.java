@@ -1,11 +1,8 @@
 package org.udg.pds.todoandroid.fragment;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +12,14 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
-import org.udg.pds.todoandroid.activity.AddTask;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
@@ -60,13 +62,10 @@ public class TaskList extends Fragment {
         Button b = getView().findViewById(R.id.b_add_task_rv);
         // This is the listener to the "Add Task" button
         b.setOnClickListener(view -> {
-            // When we press the "Add Task" button, the AddTask activity is called, where
-            // we can introduce the data of the new task
-            Intent i = new Intent(TaskList.this.getContext(), AddTask.class);
-            // We launch the activity with startActivityForResult because we want to know when
-            // the launched activity has finished. In this case, when the AddTask activity has finished
-            // we will update the list to show the new task.
-            startActivityForResult(i, Global.RQ_ADD_TASK);
+            NavDirections action =
+                TaskListDirections
+                    .actionActionTasksToAddTaskFragment();
+            Navigation.findNavController(view).navigate(action);
         });
     }
 
