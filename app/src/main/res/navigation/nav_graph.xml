@@ -9,7 +9,11 @@
         android:id="@+id/action_home"
         android:name="org.udg.pds.todoandroid.fragment.FavoritesFragment"
         android:label="content_favorites"
-        tools:layout="@layout/content_favorites" />
+        tools:layout="@layout/content_favorites" >
+        <action
+            android:id="@+id/action_action_home_to_navDrawerActivity"
+            app:destination="@id/navDrawerActivity" />
+    </fragment>
     <fragment
         android:id="@+id/action_tasks"
         android:name="org.udg.pds.todoandroid.fragment.TaskList"
@@ -34,4 +38,9 @@
             android:id="@+id/action_addTaskFragment_to_action_tasks"
             app:destination="@id/action_tasks" />
     </fragment>
+    <activity
+        android:id="@+id/navDrawerActivity"
+        android:name="org.udg.pds.todoandroid.activity.NavDrawerActivity"
+        android:label="content_nd"
+        tools:layout="@layout/content_nd" />
 </navigation>
