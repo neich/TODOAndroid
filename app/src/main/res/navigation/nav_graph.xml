@@ -43,4 +43,9 @@
         android:name="org.udg.pds.todoandroid.activity.NavDrawerActivity"
         android:label="content_nd"
         tools:layout="@layout/content_nd" />
+    <fragment
+        android:id="@+id/action_group"
+        android:name="org.udg.pds.todoandroid.fragment.GroupFragment"
+        android:label="fragment_group_list"
+        tools:layout="@layout/fragment_group_list" />
 </navigation>

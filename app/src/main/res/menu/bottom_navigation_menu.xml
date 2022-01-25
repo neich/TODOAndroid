@@ -15,9 +15,15 @@
             android:title="@string/text_image"
             app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/action_tasks"
-            android:enabled="true"
-            android:icon="@drawable/ic_task_list_24dp"
-            android:title="@string/text_tasks"
-            app:showAsAction="ifRoom" />
+        android:id="@+id/action_tasks"
+        android:enabled="true"
+        android:icon="@drawable/ic_task_list_24dp"
+        android:title="@string/text_tasks"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_group"
+        android:enabled="true"
+        android:icon="@drawable/ic_menu_share"
+        android:title="@string/text_groups"
+        app:showAsAction="ifRoom" />
 </menu>

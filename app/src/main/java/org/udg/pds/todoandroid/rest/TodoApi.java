@@ -1,5 +1,6 @@
 package org.udg.pds.todoandroid.rest;
 
+import org.udg.pds.todoandroid.entity.Group;
 import org.udg.pds.todoandroid.entity.IdObject;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.entity.User;
@@ -38,6 +39,10 @@ public interface TodoApi {
     @POST("/images")
     @Multipart
     Call<String> uploadImage(@Part MultipartBody.Part file);
+
+    @GET("/users/me/groups")
+    Call<List<Group>> getGroups();
+
 
 }
 
