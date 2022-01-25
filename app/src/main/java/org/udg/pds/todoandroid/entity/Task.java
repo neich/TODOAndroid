@@ -10,7 +10,6 @@ import java.util.Date;
  */
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
     property = "id", scope = Task.class)
-
 public class Task {
     public Long id;
     public String text;
