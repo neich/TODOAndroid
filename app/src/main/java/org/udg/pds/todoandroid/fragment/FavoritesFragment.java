@@ -14,32 +14,32 @@ import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.activity.NavDrawerActivity;
+import org.udg.pds.todoandroid.databinding.ContentFavoritesBinding;
+import org.udg.pds.todoandroid.databinding.LoginBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class FavoritesFragment extends Fragment {
 
+    private ContentFavoritesBinding binding;
 
     public FavoritesFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root = inflater.inflate(R.layout.content_favorites, container, false);
-        Button button = root.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        binding = ContentFavoritesBinding.inflate(inflater);
+        binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 NavDirections action = FavoritesFragmentDirections.actionActionHomeToNavDrawerActivity();
                 Navigation.findNavController(view).navigate(action);
             }
         });
-        return root;
+        return binding.getRoot();
     }
-
 }

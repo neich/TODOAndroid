@@ -19,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.io.IOUtils;
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
+import org.udg.pds.todoandroid.databinding.ContentFavoritesBinding;
+import org.udg.pds.todoandroid.databinding.FragmentImageBinding;
 import org.udg.pds.todoandroid.rest.TodoApi;
 
 import java.io.File;
@@ -37,8 +39,7 @@ import retrofit2.Response;
  */
 public class ImageFragment extends Fragment {
 
-    ImageView ivSelected;
-    ImageView ivDownloaded;
+    private FragmentImageBinding binding;
     Uri selectedImage = null;
 
 
@@ -53,7 +54,8 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image, container, false);
+        binding = FragmentImageBinding.inflate(inflater);
+        return binding.getRoot();
     }
 
     @Override
@@ -62,12 +64,7 @@ public class ImageFragment extends Fragment {
 
         mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
 
-        View root = this.getView();
-
-        ivSelected = root.findViewById(R.id.iv_preview);
-        ivDownloaded = root.findViewById(R.id.iv_download);
-
-        root.findViewById(R.id.b_select_image).setOnClickListener(new View.OnClickListener() {
+        binding.bSelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -77,7 +74,7 @@ public class ImageFragment extends Fragment {
             }
         });
 
-        root.findViewById(R.id.b_upload_image).setOnClickListener(new View.OnClickListener() {
+        binding.bUploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectedImage != null) {
@@ -104,7 +101,7 @@ public class ImageFragment extends Fragment {
                             public void onResponse(Call<String> call, Response<String> response) {
                                 if (response.isSuccessful()) {
                                     Toast.makeText(getContext(), "Image uploaded OK !!", Toast.LENGTH_SHORT).show();
-                                    Picasso.get().load(response.body()).into(ImageFragment.this.ivDownloaded);
+                                    Picasso.get().load(response.body()).into(binding.ivDownload);
                                 }
                                 else
                                     Toast.makeText(getContext(), "Response error !", Toast.LENGTH_SHORT).show();
@@ -131,7 +128,7 @@ public class ImageFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if (data != null && requestCode==1){
             selectedImage = data.getData();
-            ivSelected.setImageURI(selectedImage);
+            binding.ivPreview.setImageURI(selectedImage);
         }
     }
 

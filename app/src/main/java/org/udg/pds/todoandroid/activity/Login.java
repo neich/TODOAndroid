@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
+import org.udg.pds.todoandroid.databinding.LoginBinding;
 import org.udg.pds.todoandroid.entity.User;
 import org.udg.pds.todoandroid.entity.UserLogin;
 import org.udg.pds.todoandroid.rest.TodoApi;
@@ -32,21 +33,22 @@ import retrofit2.Response;
 public class Login extends AppCompatActivity {
 
     TodoApi mTodoService;
+    private LoginBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login);
 
         mTodoService = ((TodoApp) this.getApplication()).getAPI();
 
-        Button b = findViewById(R.id.login_button);
-        // This is teh listener that will be used when the user presses the "Login" button
-        b.setOnClickListener(new View.OnClickListener() {
+        binding = LoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        // This is the listener that will be used when the user presses the "Login" button
+        binding.loginButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                EditText u = Login.this.findViewById(R.id.login_username);
-                EditText p = Login.this.findViewById(R.id.login_password);
-                Login.this.checkCredentials(u.getText().toString(), p.getText().toString());
+                Login.this.checkCredentials(binding.loginUsername.getText().toString(),
+                    binding.loginPassword.getText().toString());
             }
         });
 
