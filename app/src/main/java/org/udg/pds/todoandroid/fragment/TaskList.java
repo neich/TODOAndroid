@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
-import org.udg.pds.todoandroid.databinding.TaskListBinding;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,17 +38,15 @@ import retrofit2.Response;
 public class TaskList extends Fragment {
 
     TodoApi mTodoService;
-    private TaskListBinding binding;
 
     RecyclerView mRecyclerView;
     private TRAdapter mAdapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding  = TaskListBinding.inflate(inflater);
-        return binding.getRoot();
+        return inflater.inflate(R.layout.task_list, container, false);
     }
 
     @Override
@@ -57,13 +55,14 @@ public class TaskList extends Fragment {
         super.onStart();
         mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
 
-        mRecyclerView = binding.taskRecyclerview;
+        mRecyclerView = getView().findViewById(R.id.task_recyclerview);
         mAdapter = new TRAdapter(this.getActivity().getApplication());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
+        Button b = getView().findViewById(R.id.b_add_task_rv);
         // This is the listener to the "Add Task" button
-        binding.bAddTaskRv.setOnClickListener(view -> {
+        b.setOnClickListener(view -> {
             NavDirections action =
                 TaskListDirections
                     .actionActionTasksToAddTaskFragment();
@@ -97,7 +96,7 @@ public class TaskList extends Fragment {
 
         call.enqueue(new Callback<List<Task>>() {
             @Override
-            public void onResponse(@NonNull Call<List<Task>> call, @NonNull Response<List<Task>> response) {
+            public void onResponse(Call<List<Task>> call, Response<List<Task>> response) {
                 if (response.isSuccessful()) {
                     TaskList.this.showTaskList(response.body());
                 } else {
@@ -106,7 +105,7 @@ public class TaskList extends Fragment {
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<Task>> call, @NonNull Throwable t) {
+            public void onFailure(Call<List<Task>> call, Throwable t) {
 
             }
         });
@@ -125,7 +124,7 @@ public class TaskList extends Fragment {
         }
     }
 
-    static class TRAdapter extends RecyclerView.Adapter<TaskList.TaskViewHolder> {
+    static class TRAdapter extends RecyclerView.Adapter<TaskViewHolder> {
 
         List<Task> list = new ArrayList<>();
         Context context;
@@ -135,22 +134,24 @@ public class TaskList extends Fragment {
         }
 
         @Override
-        public TaskList.TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_layout, parent, false);
-            return new TaskList.TaskViewHolder(v);
+            TaskViewHolder holder = new TaskViewHolder(v);
+
+            return holder;
         }
 
         @Override
-        public void onBindViewHolder(TaskList.TaskViewHolder holder, final int position) {
+        public void onBindViewHolder(TaskViewHolder holder, final int position) {
             holder.description.setText(list.get(position).text);
-            holder.dateLimit.setText(list.get(position).dateLimit.toString());
+            holder.dateLimit.setText(list.get(position).dateLimit.withZoneSameInstant(ZoneId.systemDefault()).format(TodoApp.noZoneFormatter));
 
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int duration = Toast.LENGTH_LONG;
 
-                    Toast toast = Toast.makeText(context, String.format("Hey, I'm item %1d", position), duration);
+                    Toast toast = Toast.makeText(context, String.format("Hey, I'm item %1d", holder.getBindingAdapterPosition()), duration);
                     toast.show();
                 }
             });
@@ -174,7 +175,7 @@ public class TaskList extends Fragment {
         }
 
         @Override
-        public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        public void onAttachedToRecyclerView(RecyclerView recyclerView) {
 
             super.onAttachedToRecyclerView(recyclerView);
         }
