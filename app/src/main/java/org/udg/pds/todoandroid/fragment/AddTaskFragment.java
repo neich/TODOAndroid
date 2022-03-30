@@ -1,10 +1,6 @@
 package org.udg.pds.todoandroid.fragment;
 
 import android.app.DatePickerDialog;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
-
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -14,24 +10,28 @@ import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
+import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
 import org.udg.pds.todoandroid.databinding.AddTaskBinding;
 import org.udg.pds.todoandroid.entity.IdObject;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.rest.TodoApi;
-import org.udg.pds.todoandroid.util.Global;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,44 +46,64 @@ import retrofit2.Response;
  */
 
 // Fragment used to create a new task
-public class AddTaskFragment extends Fragment implements Callback<IdObject> {
+public class AddTaskFragment extends Fragment implements Callback<IdObject>, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     TodoApi mTodoService;
-    private AddTaskBinding binding;
 
-    // We will use a Handler to return time from the time selection dialog to the Activity
-    Handler mHandlerT = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle b = msg.getData();
-            Integer hour = b.getInt("hour");
-            Integer minute = b.getInt("minute");
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR, hour);
-            cal.set(Calendar.MINUTE, minute);
-            binding.atTimeLimit.setText(Global.TIME_ONLY_FORMAT.format(cal.getTime()));
-        }
-    };
+    int day, month, year, hour, minute;
+    int myDay, myMonth, myYear, myHour, myMinute;
+    ZonedDateTime dateTimeLimit;
 
-    // We will use a Handler to return date from the date selection dialog to the Activity
-    Handler mHandlerD = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            Bundle b = msg.getData();
-            Integer day = b.getInt("day");
-            Integer month = b.getInt("month");
-            Integer year = b.getInt("year");
-
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.DAY_OF_MONTH, day);
-            cal.set(Calendar.MONTH, month);
-            cal.set(Calendar.YEAR, year);
-            binding.atDateLimit.setText(Global.DATE_ONLY_FORMAT.format(cal.getTime()));
-        }
-    };
+    AddTaskBinding binding;
 
     @Override
-    public void onResponse(@NonNull Call<IdObject> call, Response<IdObject> response) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = AddTaskBinding.inflate(inflater);
+        View root = binding.getRoot();
+
+        mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
+
+        FragmentManager fm = getParentFragmentManager();
+
+        // Show the time selection dialog when the "Set" button is pressed
+        binding.atDateLimitButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                year = calendar.get(Calendar.YEAR);
+                month = calendar.get(Calendar.MONTH);
+                day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(AddTaskFragment.this.getActivity(), AddTaskFragment.this, year, month, day);
+                datePickerDialog.show();            }
+        });
+
+
+        Button save = root.findViewById(R.id.at_save_button);
+        // When the "Save" button is pressed, we make the call to the responder
+        save.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                TextView textv = root.findViewById(R.id.at_text);
+
+                try {
+                    String text = textv.getText().toString();
+                    Task task = new Task();
+                    task.text = text;
+                    task.dateLimit = AddTaskFragment.this.dateTimeLimit;
+                    task.dateCreated = ZonedDateTime.now();
+                    Call<IdObject> call = mTodoService.addTask(task);
+                    call.enqueue(AddTaskFragment.this);
+                } catch (Exception ex) {
+                    Toast.makeText(AddTaskFragment.this.getContext(), "Error creating limit date", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        return root;
+    }
+
+    @Override
+    public void onResponse(Call<IdObject> call, Response<IdObject> response) {
         if (response.isSuccessful()) {
             NavDirections action =
                 AddTaskFragmentDirections
@@ -95,8 +115,29 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject> {
     }
 
     @Override
-    public void onFailure(@NonNull Call<IdObject> call, @NonNull Throwable t) {
+    public void onFailure(Call<IdObject> call, Throwable t) {
         Toast.makeText(this.getContext(), "Failure adding task", Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        myYear = year;
+        myDay = day;
+        myMonth = month;
+        Calendar c = Calendar.getInstance();
+        hour = c.get(Calendar.HOUR);
+        minute = c.get(Calendar.MINUTE);
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this.getActivity(), this, hour, minute, DateFormat.is24HourFormat(this.getActivity()));
+        timePickerDialog.show();
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        myHour = hourOfDay;
+        myMinute = minute;
+        dateTimeLimit = ZonedDateTime.of(myYear, myMonth+1, myDay+1, myHour, myMinute, 0, 0, ZoneId.systemDefault());
+        binding.atDateLimit.setText(dateTimeLimit.format(TodoApp.noZoneFormatter));
     }
 
     // This class is a Dialog used by the user to introduce a time (HH::mm)
@@ -110,7 +151,6 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject> {
             mH = h;
         }
 
-        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current time as the default values for the picker
@@ -144,7 +184,6 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject> {
             mH = h;
         }
 
-        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default values for the picker
@@ -169,49 +208,5 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject> {
         }
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = AddTaskBinding.inflate(inflater);
-        mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
 
-        // Show the time selection dialog when the "Set" button is pressed
-        binding.atTimeLimitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                TimePickerFragment dialog = new TimePickerFragment();
-                dialog.setHandler(mHandlerT);
-                dialog.show(getParentFragmentManager(), "timepickerdialog");
-            }
-        });
-
-        // Show the date selection dialog when the "Set" button is pressed
-        binding.atDateLimitButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                DatePickerFragment dialog = new DatePickerFragment();
-                dialog.setHandler(mHandlerD);
-                dialog.show(getParentFragmentManager(), "timepickerdialog");
-            }
-        });
-
-        // When the "Save" button is pressed, we make the call to the responder
-        binding.atSaveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                try {
-                    Date dateLimit = Global.TIME_DATE_FORMAT.parse(binding.atDateLimit.getText().toString() + " " + binding.atTimeLimit.getText().toString());
-                    String text = binding.atText.getText().toString();
-                    Task task = new Task();
-                    task.text = text;
-                    task.dateLimit = dateLimit;
-                    task.dateCreated = new Date();
-                    Call<IdObject> call = mTodoService.addTask(task);
-                    call.enqueue(AddTaskFragment.this);
-                } catch (Exception ex) {
-                    Toast.makeText(AddTaskFragment.this.getActivity(), "Error with date format", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        return binding.getRoot();
-    }
 }
