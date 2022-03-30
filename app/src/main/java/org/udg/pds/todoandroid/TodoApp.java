@@ -1,8 +1,11 @@
 package org.udg.pds.todoandroid;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+
 import android.app.Application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
@@ -11,19 +14,21 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
-
 /**
  * Created by imartin on 13/02/17.
  */
 public class TodoApp extends Application {
+    public static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss Z");
+    public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    public static final DateTimeFormatter noZoneFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
 
     TodoApi mTodoService;
 
@@ -44,8 +49,8 @@ public class TodoApp extends Application {
 
         ObjectMapper jacksonMapper =
             new ObjectMapper()
-                .configure(FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"));
+                .registerModule(new JavaTimeModule())
+                .configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         Retrofit retrofit = new Retrofit.Builder()
             .client(httpClient)
