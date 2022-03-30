@@ -3,7 +3,7 @@ package org.udg.pds.todoandroid.entity;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 
 /**
  * Created by imartin on 12/02/16.
@@ -13,8 +13,8 @@ import java.util.Date;
 public class Task {
     public Long id;
     public String text;
-    public Date dateLimit;
-    public Date dateCreated;
+    public ZonedDateTime dateLimit;
+    public ZonedDateTime dateCreated;
     public Boolean completed;
     public Long userId;
 }
