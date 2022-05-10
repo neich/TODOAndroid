@@ -5,9 +5,9 @@ plugins {
 
 android {
     packagingOptions {
-        pickFirst 'META-INF/LICENSE'
-        pickFirst 'META-INF/NOTICE'
-
+        resources {
+            pickFirsts += ['META-INF/LICENSE', 'META-INF/NOTICE']
+        }
     }
 
     buildFeatures {
@@ -27,8 +27,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildTypes {
@@ -44,20 +44,20 @@ android {
 dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-jackson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:3.14.9'
+    implementation 'com.squareup.okhttp3:okhttp:4.3.1'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.11.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.11.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2'
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.drawerlayout:drawerlayout:1.1.1"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation "androidx.navigation:navigation-fragment:2.4.1"
-    implementation "androidx.navigation:navigation-ui:2.4.1"
-    implementation "commons-io:commons-io:2.6"
+    implementation "androidx.navigation:navigation-fragment:$rootProject.ext.nav_version"
+    implementation "androidx.navigation:navigation-ui:$rootProject.ext.nav_version"
+    implementation "commons-io:commons-io:2.11.0"
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2'
