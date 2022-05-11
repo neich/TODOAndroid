@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
+import org.udg.pds.todoandroid.databinding.AddTaskBinding;
+import org.udg.pds.todoandroid.databinding.TaskListBinding;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
@@ -41,12 +43,14 @@ public class TaskList extends Fragment {
 
     RecyclerView mRecyclerView;
     private TRAdapter mAdapter;
+    TaskListBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        return inflater.inflate(R.layout.task_list, container, false);
+        binding = TaskListBinding.inflate(inflater);
+        return binding.getRoot();
     }
 
     @Override
@@ -55,14 +59,13 @@ public class TaskList extends Fragment {
         super.onStart();
         mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
 
-        mRecyclerView = getView().findViewById(R.id.task_recyclerview);
+        mRecyclerView = binding.taskRecyclerview;
         mAdapter = new TRAdapter(this.getActivity().getApplication());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        Button b = getView().findViewById(R.id.b_add_task_rv);
         // This is the listener to the "Add Task" button
-        b.setOnClickListener(view -> {
+        binding.bAddTaskRv.setOnClickListener(view -> {
             NavDirections action =
                 TaskListDirections
                     .actionActionTasksToAddTaskFragment();
