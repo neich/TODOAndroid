@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.activity.NavDrawerActivity;
+import org.udg.pds.todoandroid.activity.NavigationActivity;
 import org.udg.pds.todoandroid.databinding.ContentFavoritesBinding;
 import org.udg.pds.todoandroid.databinding.LoginBinding;
 
@@ -40,6 +41,14 @@ public class FavoritesFragment extends Fragment {
                 Navigation.findNavController(view).navigate(action);
             }
         });
+        binding.button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Another way to navigate
+                ((NavigationActivity)(getActivity())).navigateTo(R.id.navDrawerActivity);
+            }
+        });
+
         return binding.getRoot();
     }
 }
