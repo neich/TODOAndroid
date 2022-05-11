@@ -79,14 +79,11 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
         });
 
 
-        Button save = root.findViewById(R.id.at_save_button);
         // When the "Save" button is pressed, we make the call to the responder
-        save.setOnClickListener(new View.OnClickListener() {
+        binding.atSaveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                TextView textv = root.findViewById(R.id.at_text);
-
                 try {
-                    String text = textv.getText().toString();
+                    String text = binding.atText.getText().toString();
                     Task task = new Task();
                     task.text = text;
                     task.dateLimit = AddTaskFragment.this.dateTimeLimit;
