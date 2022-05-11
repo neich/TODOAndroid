@@ -43,4 +43,8 @@
         android:name="org.udg.pds.todoandroid.activity.NavDrawerActivity"
         android:label="content_nd"
         tools:layout="@layout/content_nd" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="org.udg.pds.todoandroid.fragment.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
