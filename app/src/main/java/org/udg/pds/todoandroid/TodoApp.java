@@ -25,9 +25,6 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Created by imartin on 13/02/17.
  */
 public class TodoApp extends Application {
-    public static final DateTimeFormatter dtFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss Z");
-    public static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-    public static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     public static final DateTimeFormatter noZoneFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss");
 
     TodoApi mTodoService;
