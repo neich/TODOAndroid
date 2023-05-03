@@ -50,7 +50,6 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
 
     TodoApi mTodoService;
 
-    int day, month, year, hour, minute;
     int myDay, myMonth, myYear, myHour, myMinute;
     ZonedDateTime dateTimeLimit;
 
@@ -71,9 +70,9 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
         binding.atDateLimitButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                year = calendar.get(Calendar.YEAR);
-                month = calendar.get(Calendar.MONTH);
-                day = calendar.get(Calendar.DAY_OF_MONTH);
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
                 DatePickerDialog datePickerDialog = new DatePickerDialog(AddTaskFragment.this.getActivity(), AddTaskFragment.this, year, month, day);
                 datePickerDialog.show();            }
         });
@@ -118,13 +117,13 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
     }
 
     @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+    public void onDateSet(DatePicker view, int year, int month, int day) {
         myYear = year;
         myDay = day;
         myMonth = month;
         Calendar c = Calendar.getInstance();
-        hour = c.get(Calendar.HOUR);
-        minute = c.get(Calendar.MINUTE);
+        int hour = c.get(Calendar.HOUR);
+        int minute = c.get(Calendar.MINUTE);
         TimePickerDialog timePickerDialog = new TimePickerDialog(this.getActivity(), this, hour, minute, DateFormat.is24HourFormat(this.getActivity()));
         timePickerDialog.show();
     }
@@ -136,74 +135,5 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
         dateTimeLimit = ZonedDateTime.of(myYear, myMonth+1, myDay+1, myHour, myMinute, 0, 0, ZoneId.systemDefault());
         binding.atDateLimit.setText(dateTimeLimit.format(TodoApp.noZoneFormatter));
     }
-
-    // This class is a Dialog used by the user to introduce a time (HH::mm)
-    // It is shown when the user presses the "Set" button
-    // in the "time limit" field
-    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-
-        Handler mH;
-
-        public void setHandler(Handler h) {
-            mH = h;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            Message msg = new Message();
-            Bundle data = new Bundle();
-            data.putInt("hour", hourOfDay);
-            data.putInt("minute", minute);
-            msg.setData(data);
-            mH.sendMessage(msg);
-        }
-    }
-
-    // This class is a Dialog user by the user to introduce a time (dd/mm/yyyy)
-    // It is shown when the user presses the "Set" button
-    // in the "date limit" field
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
-        Handler mH;
-
-        public void setHandler(Handler h) {
-            mH = h;
-        }
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current date as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int day = c.get(Calendar.DAY_OF_MONTH);
-            int month = c.get(Calendar.MONTH);
-            int year = c.get(Calendar.YEAR);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new DatePickerDialog(getActivity(), this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            Message msg = new Message();
-            Bundle data = new Bundle();
-            data.putInt("day", day);
-            data.putInt("month", month);
-            data.putInt("year", year);
-
-            msg.setData(data);
-            mH.sendMessage(msg);
-        }
-    }
-
 
 }
