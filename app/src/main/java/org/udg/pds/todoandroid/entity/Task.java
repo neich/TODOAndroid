@@ -13,8 +13,8 @@ import java.time.ZonedDateTime;
 public class Task {
     public Long id;
     public String text;
-    public ZonedDateTime dateLimit;
-    public ZonedDateTime dateCreated;
+    public String dateLimit;
+    public String dateCreated;
     public Boolean completed;
     public Long userId;
 }
