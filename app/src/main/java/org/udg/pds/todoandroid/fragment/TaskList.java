@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
-import org.udg.pds.todoandroid.databinding.AddTaskBinding;
 import org.udg.pds.todoandroid.databinding.TaskListBinding;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.rest.TodoApi;
@@ -147,7 +145,7 @@ public class TaskList extends Fragment {
         @Override
         public void onBindViewHolder(TaskViewHolder holder, final int position) {
             holder.description.setText(list.get(position).text);
-            holder.dateLimit.setText(list.get(position).dateLimit.withZoneSameInstant(ZoneId.systemDefault()).format(TodoApp.noZoneFormatter));
+            holder.dateLimit.setText(list.get(position).dateLimit);
 
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -169,7 +167,7 @@ public class TaskList extends Fragment {
                 }
             });
 
-            animate(holder);
+            // animate(holder);
         }
 
         @Override

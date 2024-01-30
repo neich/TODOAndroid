@@ -1,28 +1,21 @@
 package org.udg.pds.todoandroid.fragment;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavDirections;
 import androidx.navigation.fragment.NavHostFragment;
 
-import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
 import org.udg.pds.todoandroid.databinding.AddTaskBinding;
 import org.udg.pds.todoandroid.entity.IdObject;
@@ -85,8 +78,8 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
                     String text = binding.atText.getText().toString();
                     Task task = new Task();
                     task.text = text;
-                    task.dateLimit = AddTaskFragment.this.dateTimeLimit;
-                    task.dateCreated = ZonedDateTime.now();
+                    task.dateLimit = TodoApp.AppDateFormatter.format(AddTaskFragment.this.dateTimeLimit);
+                    task.dateCreated = TodoApp.AppDateFormatter.format(ZonedDateTime.now());
                     Call<IdObject> call = mTodoService.addTask(task);
                     call.enqueue(AddTaskFragment.this);
                 } catch (Exception ex) {
@@ -132,8 +125,8 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         myHour = hourOfDay;
         myMinute = minute;
-        dateTimeLimit = ZonedDateTime.of(myYear, myMonth+1, myDay+1, myHour, myMinute, 0, 0, ZoneId.systemDefault());
-        binding.atDateLimit.setText(dateTimeLimit.format(TodoApp.noZoneFormatter));
+        dateTimeLimit = ZonedDateTime.of(myYear, myMonth+1, myDay, myHour, myMinute, 0, 0, ZoneId.systemDefault());
+        binding.atDateLimit.setText(dateTimeLimit.format(TodoApp.AppDateFormatter));
     }
 
 }
