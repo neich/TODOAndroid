@@ -14,8 +14,7 @@ android {
         viewBinding true
     }
 
-    compileSdkVersion 31
-    buildToolsVersion "33.0.1"
+    compileSdk 31
 
     defaultConfig {
         applicationId "org.udg.pds.todoandroid"
