@@ -11,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -33,7 +34,12 @@ public class NavDrawerActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+                    .setAction("ACTION", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(NavDrawerActivity.this, "Hola!", Toast.LENGTH_LONG).show();
+                        }
+                    }).show();
             }
         });
 

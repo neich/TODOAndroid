@@ -22,7 +22,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
 /**
- * Created by imartin on 13/02/17.
+ * Created by imartin on 13/02/17 i test git.
  */
 public class TodoApp extends Application {
     public static final DateTimeFormatter AppDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss z");
