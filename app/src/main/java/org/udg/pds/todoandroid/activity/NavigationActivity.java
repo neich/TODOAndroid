@@ -1,15 +1,22 @@
 package org.udg.pds.todoandroid.activity;
 
+import static androidx.navigation.ui.AppBarConfigurationKt.AppBarConfiguration;
+import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.databinding.MainBinding;
@@ -27,17 +34,26 @@ public class NavigationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = MainBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbarMain);
         setUpNavigation();
     }
 
     public void setUpNavigation(){
         navHostFragment = (NavHostFragment)getSupportFragmentManager()
             .findFragmentById(R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(binding.bottomNavigation,
-            navHostFragment.getNavController());
-        NavigationUI.setupWithNavController(binding.toolbarMain,
-            navHostFragment.getNavController());
+        var navController = navHostFragment.getNavController();
+        DrawerLayout dl = findViewById(R.id.drawer_layout);
+        var appBarConfiguration =
+            new AppBarConfiguration.Builder(
+                R.id.action_home,
+                R.id.action_image,
+                R.id.action_tasks)
+                .setOpenableLayout(dl)
+                .build();
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
+        NavigationView navView = findViewById(R.id.nav_view);
+        NavigationUI.setupWithNavController(navView, navController);
 
     }
 
