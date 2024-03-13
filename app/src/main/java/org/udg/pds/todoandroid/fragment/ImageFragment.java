@@ -19,7 +19,6 @@ import com.squareup.picasso.Picasso;
 import org.apache.commons.io.IOUtils;
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
-import org.udg.pds.todoandroid.databinding.ContentFavoritesBinding;
 import org.udg.pds.todoandroid.databinding.FragmentImageBinding;
 import org.udg.pds.todoandroid.rest.TodoApi;
 
