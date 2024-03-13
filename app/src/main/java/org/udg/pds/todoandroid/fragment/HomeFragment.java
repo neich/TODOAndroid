@@ -1,31 +1,27 @@
 package org.udg.pds.todoandroid.fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.activity.NavDrawerActivity;
 import org.udg.pds.todoandroid.activity.NavigationActivity;
-import org.udg.pds.todoandroid.databinding.ContentFavoritesBinding;
-import org.udg.pds.todoandroid.databinding.LoginBinding;
+import org.udg.pds.todoandroid.databinding.HomeFragmentBinding;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoritesFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    private ContentFavoritesBinding binding;
+    private HomeFragmentBinding binding;
 
-    public FavoritesFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -33,11 +29,11 @@ public class FavoritesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = ContentFavoritesBinding.inflate(inflater);
+        binding = HomeFragmentBinding.inflate(inflater);
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavDirections action = FavoritesFragmentDirections.actionActionHomeToNavDrawerActivity();
+                NavDirections action = HomeFragmentDirections.actionActionHomeToNavDrawerActivity();
                 Navigation.findNavController(view).navigate(action);
             }
         });
