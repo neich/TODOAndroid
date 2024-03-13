@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 
-import org.udg.pds.todoandroid.databinding.ContentFavoritesBinding;
 import org.udg.pds.todoandroid.databinding.ContentSettingsBinding;
 
 /**
