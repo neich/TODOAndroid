@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/action_home"
-        android:name="org.udg.pds.todoandroid.fragment.FavoritesFragment"
-        android:label="content_favorites"
-        tools:layout="@layout/content_favorites" >
+        android:name="org.udg.pds.todoandroid.fragment.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/home_fragment" >
         <action
             android:id="@+id/action_action_home_to_navDrawerActivity"
             app:destination="@id/navDrawerActivity" />
@@ -17,7 +17,7 @@
     <fragment
         android:id="@+id/action_tasks"
         android:name="org.udg.pds.todoandroid.fragment.TaskList"
-        android:label="task_list"
+        android:label="Tasks"
         tools:layout="@layout/task_list" >
         <action
             android:id="@+id/action_action_tasks_to_addTaskFragment"
@@ -27,12 +27,12 @@
     <fragment
         android:id="@+id/action_image"
         android:name="org.udg.pds.todoandroid.fragment.ImageFragment"
-        android:label="fragment_schedules"
+        android:label="Image"
         tools:layout="@layout/fragment_image" />
     <fragment
         android:id="@+id/addTaskFragment"
         android:name="org.udg.pds.todoandroid.fragment.AddTaskFragment"
-        android:label="add_task"
+        android:label="Add task"
         tools:layout="@layout/add_task" >
         <action
             android:id="@+id/action_addTaskFragment_to_action_tasks"
