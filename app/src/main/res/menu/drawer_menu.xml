@@ -10,4 +10,9 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/text_image"/>
 
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="@string/text_settings"/>
+
 </menu>
