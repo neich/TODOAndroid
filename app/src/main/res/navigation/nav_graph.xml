@@ -9,20 +9,19 @@
         android:id="@+id/action_home"
         android:name="org.udg.pds.todoandroid.fragment.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/home_fragment" >
-        <action
-            android:id="@+id/action_action_home_to_navDrawerActivity"
-            app:destination="@id/navDrawerActivity" />
-    </fragment>
+        tools:layout="@layout/home_fragment" />
     <fragment
         android:id="@+id/action_tasks"
         android:name="org.udg.pds.todoandroid.fragment.TaskList"
         android:label="Tasks"
         tools:layout="@layout/task_list" >
         <action
-            android:id="@+id/action_action_tasks_to_addTaskFragment"
+            android:id="@+id/action_addTask"
             app:destination="@id/addTaskFragment"
             app:enterAnim="@anim/nav_default_pop_enter_anim" />
+        <action
+            android:id="@+id/action_showTask"
+            app:destination="@id/taskView" />
     </fragment>
     <fragment
         android:id="@+id/action_image"
@@ -38,13 +37,22 @@
             android:id="@+id/action_addTaskFragment_to_action_tasks"
             app:destination="@id/action_tasks" />
     </fragment>
-    <activity
-        android:id="@+id/navDrawerActivity"
-        android:name="org.udg.pds.todoandroid.activity.NavDrawerActivity"
-        android:label="content_nd"
-        tools:layout="@layout/content_nd" />
     <fragment
-        android:id="@+id/settingsFragment"
+        android:id="@+id/action_settings"
         android:name="org.udg.pds.todoandroid.fragment.SettingsFragment"
         android:label="SettingsFragment" />
+    <activity
+        android:id="@+id/taskView"
+        android:name="org.udg.pds.todoandroid.activity.TaskView"
+        android:label="activity_task_view"
+        tools:layout="@layout/activity_task_view" >
+        <argument
+            android:name="TaskItem"
+            app:argType="org.udg.pds.todoandroid.entity.Task" />
+    </activity>
+    <activity
+        android:id="@+id/aboutActivity"
+        android:name="org.udg.pds.todoandroid.activity.AboutActivity"
+        android:label="activity_about"
+        tools:layout="@layout/activity_about" />
 </navigation>
