@@ -1,11 +1,16 @@
 package org.udg.pds.todoandroid.fragment;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
@@ -30,21 +35,42 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = HomeFragmentBinding.inflate(inflater);
-        binding.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavDirections action = HomeFragmentDirections.actionActionHomeToNavDrawerActivity();
-                Navigation.findNavController(view).navigate(action);
-            }
-        });
-        binding.button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Another way to navigate
-                ((NavigationActivity)(getActivity())).navigateTo(R.id.navDrawerActivity);
-            }
-        });
+
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ArrayAdapter<CharSequence> adapter_xml = ArrayAdapter.createFromResource(
+            getActivity(),
+            R.array.planets_array,
+            android.R.layout.simple_spinner_item
+        );
+
+        Spinner spDefault = binding.spFromXml;
+        adapter_xml.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner.
+        spDefault.setAdapter(adapter_xml);
+
+        ArrayAdapter<CharSequence> adapter_runtime = new ArrayAdapter<>(
+            getActivity(),
+            android.R.layout.simple_spinner_item
+        );
+        adapter_runtime.add("First option");
+        adapter_runtime.add("Second option");
+        adapter_runtime.add("Last option");
+
+
+        Spinner spRuntime = binding.spRuntime;
+        adapter_runtime.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner.
+        spRuntime.setAdapter(adapter_runtime);
+
+
+
+
     }
 }

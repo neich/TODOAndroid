@@ -7,26 +7,42 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/text_sel_xml"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Button"
-        android:textSize="18sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/text_sel_xml"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button2"
+    <TextView
+        android:id="@+id/text_sel_runtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
-        android:text="Another Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_marginTop="32dp"
+        android:text="@string/text_sel_runtime"
+        app:layout_constraintStart_toStartOf="@+id/text_sel_xml"
+        app:layout_constraintTop_toBottomOf="@+id/sp_from_xml" />
+
+    <Spinner
+        android:id="@+id/sp_from_xml"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_sel_xml"
+        app:layout_constraintStart_toEndOf="@+id/text_sel_xml"
+        app:layout_constraintTop_toTopOf="@+id/text_sel_xml" />
+
+    <Spinner
+        android:id="@+id/sp_runtime"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/text_sel_runtime"
+        app:layout_constraintStart_toEndOf="@+id/text_sel_runtime"
+        app:layout_constraintTop_toTopOf="@+id/text_sel_runtime" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
