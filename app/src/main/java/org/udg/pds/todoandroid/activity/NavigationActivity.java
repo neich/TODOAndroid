@@ -3,6 +3,7 @@ package org.udg.pds.todoandroid.activity;
 import static androidx.navigation.ui.AppBarConfigurationKt.AppBarConfiguration;
 import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -26,26 +28,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.databinding.MainBinding;
+import org.udg.pds.todoandroid.databinding.NavigationActivityBinding;
 import org.udg.pds.todoandroid.fragment.TaskList;
 
 // This is the main activity that contains the bottom navigation
 // This class SHOULD NOT BE CHANGED except for very specific features
 public class NavigationActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    MainBinding binding;
+    NavigationActivityBinding binding;
     NavHostFragment navHostFragment;
     DrawerLayout drawerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = MainBinding.inflate(this.getLayoutInflater());
+        binding = NavigationActivityBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
         setUpNavigation();
     }
 
-    public void setUpNavigation(){
+    public void setUpNavigation() {
         navHostFragment = (NavHostFragment)getSupportFragmentManager()
             .findFragmentById(R.id.nav_host_fragment);
         var navController = navHostFragment.getNavController();
@@ -70,8 +72,19 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
     public boolean onNavigationItemSelected(MenuItem item) {
         int selectedItemId = item.getItemId();
         drawerLayout.closeDrawer(GravityCompat.START);
-        if(selectedItemId == R.id.action_settings) {
-            startActivity(new Intent(NavigationActivity.this, NavDrawerActivity.class));
+        if(selectedItemId == R.id.action_about) {
+            // IMPORTANT: Example of custom action when selecting an item from the Drawer menu
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            // 2. Chain together various setter methods to set the dialog characteristics.
+            builder.setMessage(R.string.about_message).setTitle(R.string.about_title);
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User taps OK button.
+                }
+            });
+            // 3. Get the AlertDialog.
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
         else {
             navigateTo(selectedItemId);
