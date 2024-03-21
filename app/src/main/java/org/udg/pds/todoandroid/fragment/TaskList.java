@@ -64,9 +64,7 @@ public class TaskList extends Fragment {
 
         // This is the listener to the "Add Task" button
         binding.bAddTaskRv.setOnClickListener(view -> {
-            NavDirections action =
-                TaskListDirections
-                    .actionActionTasksToAddTaskFragment();
+            NavDirections action = TaskListDirections.actionAddTask();
             Navigation.findNavController(view).navigate(action);
         });
     }
@@ -138,22 +136,15 @@ public class TaskList extends Fragment {
         public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.task_layout, parent, false);
             TaskViewHolder holder = new TaskViewHolder(v);
-
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(TaskViewHolder holder, final int position) {
-            holder.description.setText(list.get(position).text);
-            holder.dateLimit.setText(list.get(position).dateLimit);
-
             holder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int duration = Toast.LENGTH_LONG;
 
-                    Toast toast = Toast.makeText(context, String.format("Hey, I'm item %1d", holder.getBindingAdapterPosition()), duration);
-                    toast.show();
+                    // IMPORTANT: example of how to navigate to a destination from a click on a item
+                    // passing the data corresponding to the item in the holder's position
+                    NavDirections action = TaskListDirections.actionShowTask(TRAdapter.this.list.get(holder.getBindingAdapterPosition()));
+                    Navigation.findNavController(view).navigate(action);
                 }
             });
 
@@ -167,7 +158,13 @@ public class TaskList extends Fragment {
                 }
             });
 
-            // animate(holder);
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(TaskViewHolder holder, final int position) {
+            holder.description.setText(list.get(position).text);
+            holder.dateLimit.setText(list.get(position).dateLimit);
         }
 
         @Override
