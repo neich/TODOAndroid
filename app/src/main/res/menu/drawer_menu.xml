@@ -15,4 +15,10 @@
         android:icon="@drawable/ic_menu_manage"
         android:title="@string/text_settings"/>
 
+    <item
+        android:id="@+id/action_about"
+        android:icon="@drawable/question_mark"
+        android:title="@string/text_about"/>
+
+
 </menu>
