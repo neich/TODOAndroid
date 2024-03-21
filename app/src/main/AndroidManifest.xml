@@ -12,21 +12,16 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".activity.Login">
-        </activity>
-        <activity android:name=".activity.NavigationActivity">
-        </activity>
-        <activity
-            android:name=".activity.NavDrawerActivity"
-            android:label="@string/title_activity_nd"
-            android:theme="@style/AppTheme">
-        </activity>
+            android:name=".activity.TaskView"
+            android:exported="false" />
+        <activity android:name=".activity.Login" />
+        <activity android:name=".activity.NavigationActivity" />
         <activity
             android:name=".activity.SplashScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:exported="true"
             android:label="@string/title_activity_splash_screen"
-            android:theme="@style/FullscreenTheme"
-            android:exported="true">
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
