@@ -3,12 +3,9 @@ package org.udg.pds.todoandroid.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.databinding.ActivityAboutBinding;
 import org.udg.pds.todoandroid.databinding.ActivityTaskViewBinding;
 import org.udg.pds.todoandroid.entity.Task;
 
