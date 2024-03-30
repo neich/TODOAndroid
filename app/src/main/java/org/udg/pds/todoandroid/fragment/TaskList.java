@@ -144,7 +144,7 @@ public class TaskList extends Fragment {
                     // IMPORTANT: example of how to navigate to a destination from a click on a item
                     // passing the data corresponding to the item in the holder's position
                     NavDirections action = TaskListDirections.actionShowTask(TRAdapter.this.list.get(holder.getBindingAdapterPosition()));
-                    Navigation.findNavController(view).navigate(action);
+                    Navigation.findNavController(parent).navigate(action);
                 }
             });
 
