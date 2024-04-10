@@ -54,12 +54,6 @@ public class ImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentImageBinding.inflate(inflater);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
 
         mTodoService = ((TodoApp) this.getActivity().getApplication()).getAPI();
 
@@ -120,6 +114,7 @@ public class ImageFragment extends Fragment {
             }
         });
 
+        return binding.getRoot();
     }
 
 
