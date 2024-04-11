@@ -44,5 +44,24 @@
         app:layout_constraintStart_toEndOf="@+id/text_sel_runtime"
         app:layout_constraintTop_toTopOf="@+id/text_sel_runtime" />
 
+    <Button
+        android:id="@+id/button_not"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Send notification in n seconds"
+        app:layout_constraintStart_toStartOf="@+id/text_sel_runtime"
+        app:layout_constraintTop_toBottomOf="@+id/sp_runtime" />
+
+    <EditText
+        android:id="@+id/seconds_not"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintStart_toEndOf="@+id/button_not"
+        app:layout_constraintTop_toTopOf="@+id/button_not" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
