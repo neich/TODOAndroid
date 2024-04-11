@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:name=".TodoApp"
@@ -15,7 +18,8 @@
             android:name=".activity.TaskView"
             android:exported="false" />
         <activity android:name=".activity.Login" />
-        <activity android:name=".activity.NavigationActivity" />
+        <activity android:name=".activity.NavigationActivity"
+            android:exported="true"/>
         <activity
             android:name=".activity.SplashScreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -28,6 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".service.ShowNotification"
+            android:exported="true"
+            />
     </application>
 
 </manifest>
