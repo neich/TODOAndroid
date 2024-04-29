@@ -1,5 +1,6 @@
 package org.udg.pds.todoandroid.activity;
 
+import static android.view.View.GONE;
 import static androidx.navigation.ui.AppBarConfigurationKt.AppBarConfiguration;
 import static androidx.navigation.ui.NavigationUI.setupActionBarWithNavController;
 
@@ -52,6 +53,8 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             .findFragmentById(R.id.nav_host_fragment);
         var navController = navHostFragment.getNavController();
         drawerLayout = findViewById(R.id.drawer_layout);
+        // Here you have to add the root destinations
+        // (the ones corresponding to the items of the bottom navigation)
         var appBarConfiguration =
             new AppBarConfiguration.Builder(
                 R.id.action_home,
@@ -59,20 +62,31 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
                 R.id.action_tasks)
                 .setOpenableLayout(drawerLayout)
                 .build();
-        NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
+        // NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         Toolbar toolbar = findViewById(R.id.toolbar);
         NavigationUI.setupWithNavController(toolbar, navController, appBarConfiguration);
-        NavigationView navView = findViewById(R.id.nav_view);
-        NavigationUI.setupWithNavController(navView, navController);
+        // NavigationUI.setupWithNavController(binding.navView, navController);
 
-        navView.setNavigationItemSelectedListener(this);
+        binding.navView.setNavigationItemSelectedListener(this);
+        binding.bottomNavigation.setOnItemSelectedListener(item -> {
+            var itemId = item.getItemId();
+            if (itemId == R.id.action_home) {
+                navigateTo(R.id.action_home);
+            } else if (itemId == R.id.action_image) {
+                NavHostFragment.findNavController(navHostFragment).navigate(R.id.action_image);
+            } else if (itemId == R.id.action_tasks) {
+                navigateTo(R.id.action_tasks);
+            }
+            item.setChecked(true);
+            return false;
+        });
     }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int selectedItemId = item.getItemId();
         drawerLayout.closeDrawer(GravityCompat.START);
-        if(selectedItemId == R.id.action_about) {
+        if (selectedItemId == R.id.action_about) {
             // IMPORTANT: Example of custom action when selecting an item from the Drawer menu
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             // 2. Chain together various setter methods to set the dialog characteristics.
@@ -86,8 +100,11 @@ public class NavigationActivity extends AppCompatActivity implements NavigationV
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        else {
+        else if (selectedItemId == R.id.action_settings) {
             navigateTo(selectedItemId);
+        }
+        else if (selectedItemId == R.id.action_image || selectedItemId == R.id.action_home || selectedItemId == R.id.action_tasks) {
+            binding.bottomNavigation.setSelectedItemId(selectedItemId);
         }
 
         return true;
