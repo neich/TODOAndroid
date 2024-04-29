@@ -5,6 +5,7 @@ import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKN
 import android.app.Application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
 import com.franmontiel.persistentcookiejar.PersistentCookieJar;
@@ -15,6 +16,7 @@ import org.udg.pds.todoandroid.rest.TodoApi;
 import org.udg.pds.todoandroid.util.Global;
 
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -25,7 +27,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * Created by imartin on 13/02/17.
  */
 public class TodoApp extends Application {
-    public static final DateTimeFormatter AppDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy - HH:mm:ss z");
+    public static final DateTimeFormatter AppDateFormatter
+        = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM);;
 
     TodoApi mTodoService;
 
@@ -47,12 +50,12 @@ public class TodoApp extends Application {
         ObjectMapper jacksonMapper =
             new ObjectMapper()
                 .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .configure(FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         Retrofit retrofit = new Retrofit.Builder()
             .client(httpClient)
             .baseUrl(Global.BASE_URL_PORTFORWARDING)
-            //.baseUrl(Global.BASE_URL_GENYMOTION)
             .addConverterFactory(JacksonConverterFactory.create(jacksonMapper))
             .build();
 
