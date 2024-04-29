@@ -78,8 +78,8 @@ public class AddTaskFragment extends Fragment implements Callback<IdObject>, Dat
                     String text = binding.atText.getText().toString();
                     Task task = new Task();
                     task.text = text;
-                    task.dateLimit = TodoApp.AppDateFormatter.format(AddTaskFragment.this.dateTimeLimit);
-                    task.dateCreated = TodoApp.AppDateFormatter.format(ZonedDateTime.now());
+                    task.dateLimit = AddTaskFragment.this.dateTimeLimit;
+                    task.dateCreated = ZonedDateTime.now();
                     Call<IdObject> call = mTodoService.addTask(task);
                     call.enqueue(AddTaskFragment.this);
                 } catch (Exception ex) {

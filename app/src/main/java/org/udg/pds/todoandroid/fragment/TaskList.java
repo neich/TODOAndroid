@@ -164,7 +164,7 @@ public class TaskList extends Fragment {
         @Override
         public void onBindViewHolder(TaskViewHolder holder, final int position) {
             holder.description.setText(list.get(position).text);
-            holder.dateLimit.setText(list.get(position).dateLimit);
+            holder.dateLimit.setText(list.get(position).dateLimit.format(TodoApp.AppDateFormatter));
         }
 
         @Override

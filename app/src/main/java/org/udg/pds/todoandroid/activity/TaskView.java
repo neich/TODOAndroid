@@ -6,8 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import org.udg.pds.todoandroid.TodoApp;
 import org.udg.pds.todoandroid.databinding.ActivityTaskViewBinding;
 import org.udg.pds.todoandroid.entity.Task;
+
+import java.time.ZonedDateTime;
 
 public class TaskView extends AppCompatActivity {
 
@@ -18,13 +21,11 @@ public class TaskView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTaskViewBinding.inflate(getLayoutInflater());
 
-
-
         var args = TaskViewArgs.fromBundle(getIntent().getExtras());
         Task t = args.getTaskItem();
 
-        binding.tvDatecreated.setText(t.dateCreated);
-        binding.tvDatelimit.setText(t.dateLimit);
+        binding.tvDatecreated.setText(t.dateCreated.format(TodoApp.AppDateFormatter));
+        binding.tvDatelimit.setText(t.dateLimit.format(TodoApp.AppDateFormatter));
         binding.tvText.setText(t.text);
 
         setContentView(binding.getRoot());

@@ -14,8 +14,8 @@ import java.time.ZonedDateTime;
 public class Task implements Serializable {
     public Long id;
     public String text;
-    public String dateLimit;
-    public String dateCreated;
+    public ZonedDateTime dateLimit;
+    public ZonedDateTime dateCreated;
     public Boolean completed;
     public Long userId;
 }
