@@ -20,6 +20,8 @@ import org.apache.commons.io.IOUtils;
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.TodoApp;
 import org.udg.pds.todoandroid.databinding.FragmentImageBinding;
+import org.udg.pds.todoandroid.entity.ImageData;
+import org.udg.pds.todoandroid.entity.ImageReturn;
 import org.udg.pds.todoandroid.rest.TodoApi;
 
 import java.io.File;
@@ -41,13 +43,11 @@ public class ImageFragment extends Fragment {
     private FragmentImageBinding binding;
     Uri selectedImage = null;
 
-
     TodoApi mTodoService;
 
     public ImageFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,23 +85,24 @@ public class ImageFragment extends Fragment {
                             );
 
                         // MultipartBody.Part is used to send also the actual file name
-                        MultipartBody.Part body =
+                        MultipartBody.Part file =
                             MultipartBody.Part.createFormData("file", tempFile.getName(), requestFile);
 
-                        Call<String> call = mTodoService.uploadImage(body);
-                        call.enqueue(new Callback<String>() {
+                        Call<ImageReturn> call = mTodoService.uploadImage(file, new ImageData("A description hardcoded"));
+
+                        call.enqueue(new Callback<>() {
                             @Override
-                            public void onResponse(Call<String> call, Response<String> response) {
+                            public void onResponse(Call<ImageReturn> call, Response<ImageReturn> response) {
                                 if (response.isSuccessful()) {
                                     Toast.makeText(getContext(), "Image uploaded OK !!", Toast.LENGTH_SHORT).show();
-                                    Picasso.get().load(response.body()).into(binding.ivDownload);
+                                    Picasso.get().load(response.body().url).into(binding.ivDownload);
                                 }
                                 else
                                     Toast.makeText(getContext(), "Response error !", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
-                            public void onFailure(Call<String> call, Throwable t) {
+                            public void onFailure(Call<ImageReturn> call, Throwable t) {
                                 Toast.makeText(getContext(), "Failure !", Toast.LENGTH_SHORT).show();
                             }
                         });

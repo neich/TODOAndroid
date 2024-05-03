@@ -1,6 +1,8 @@
 package org.udg.pds.todoandroid.rest;
 
 import org.udg.pds.todoandroid.entity.IdObject;
+import org.udg.pds.todoandroid.entity.ImageData;
+import org.udg.pds.todoandroid.entity.ImageReturn;
 import org.udg.pds.todoandroid.entity.Task;
 import org.udg.pds.todoandroid.entity.User;
 import org.udg.pds.todoandroid.entity.UserLogin;
@@ -37,7 +39,7 @@ public interface TodoApi {
 
     @POST("/images")
     @Multipart
-    Call<String> uploadImage(@Part MultipartBody.Part file);
+    Call<ImageReturn> uploadImage(@Part MultipartBody.Part file, @Part("data") ImageData data);
 
 }
 
