@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.udg.pds.todoandroid.R;
@@ -31,10 +32,10 @@ public class SplashScreen extends AppCompatActivity {
 
         TodoApi todoApi = ((TodoApp) this.getApplication()).getAPI();
 
-        Call<String> call = todoApi.check();
-        call.enqueue(new Callback<String>() {
+        Call<Void> call = todoApi.check();
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
 
                 if (response.isSuccessful()) {
                     SplashScreen.this.startActivity(new Intent(SplashScreen.this, NavigationActivity.class));
@@ -46,7 +47,7 @@ public class SplashScreen extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Toast toast = Toast.makeText(SplashScreen.this, "Error checking login status", Toast.LENGTH_SHORT);
                 toast.show();
             }
