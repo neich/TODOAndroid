@@ -26,7 +26,7 @@ public interface TodoApi {
     Call<User> login(@Body UserLogin login);
 
     @GET("/users/check")
-    Call<String> check();
+    Call<Void> check();
 
     @POST("/tasks")
     Call<IdObject> addTask(@Body Task task);
