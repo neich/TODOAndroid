@@ -5,38 +5,41 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/action_home">
 
-    <fragment
+<!--    <fragment
         android:id="@+id/action_home"
-        android:name="org.udg.pds.todoandroid.fragment.FavoritesFragment"
+        android:name="org.udg.pds.todoandroid.fragment."
         android:label="content_favorites"
         tools:layout="@layout/content_favorites" >
         <action
             android:id="@+id/action_action_home_to_navDrawerActivity"
             app:destination="@id/navDrawerActivity" />
+    </fragment> -->
+    <fragment
+        android:id="@+id/action_new_product"
+        android:name="org.udg.pds.todoandroid.fragment.NewRecipeFragment"
+        android:label="PENJA UN NOU PRODUCTE"
+        tools:layout="@layout/fragment_new_recipe" >
     </fragment>
     <fragment
-        android:id="@+id/action_tasks"
-        android:name="org.udg.pds.todoandroid.fragment.TaskList"
-        android:label="task_list"
-        tools:layout="@layout/task_list" >
+        android:id="@+id/action_home"
+        android:name="org.udg.pds.todoandroid.fragment.CategoriesFragment"
+        android:label="INICI: TOTES LES CATEGORIES"
+        tools:layout="@layout/fragment_categories" >
         <action
-            android:id="@+id/action_action_tasks_to_addTaskFragment"
-            app:destination="@id/addTaskFragment"
-            app:enterAnim="@anim/nav_default_pop_enter_anim" />
+            android:id="@+id/action_action_profile_to_categories"
+            app:destination="@id/action_home" />
     </fragment>
     <fragment
-        android:id="@+id/action_image"
-        android:name="org.udg.pds.todoandroid.fragment.ImageFragment"
-        android:label="fragment_schedules"
-        tools:layout="@layout/fragment_image" />
+        android:id="@+id/action_favorites"
+        android:name="org.udg.pds.todoandroid.fragment.FavoritesFragment"
+        android:label="FAVORITES"
+        tools:layout="@layout/fragment_favorites" >
+    </fragment>
     <fragment
-        android:id="@+id/addTaskFragment"
-        android:name="org.udg.pds.todoandroid.fragment.AddTaskFragment"
-        android:label="add_task"
-        tools:layout="@layout/add_task" >
-        <action
-            android:id="@+id/action_addTaskFragment_to_action_tasks"
-            app:destination="@id/action_tasks" />
+        android:id="@+id/action_profile"
+        android:name="org.udg.pds.todoandroid.fragment.ProfileFragment"
+        android:label="PERFIL"
+        tools:layout="@layout/fragment_profile" >
     </fragment>
     <activity
         android:id="@+id/navDrawerActivity"

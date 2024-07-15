@@ -16,6 +16,9 @@
     <string name="time_limit">Time limit:</string>
     <string name="button_save">Save</string>
     <string name="text_home">Home</string>
+    <string name="text_profile">Perfil</string>
+    <string name="text_favorites">Preferits</string>
+    <string name="text_new_recipe">Nova recepta</string>
     <string name="text_image">Image</string>
     <string name="text_tasks">Tasks</string>
     <string name="title_activity_nd">NDActivity</string>

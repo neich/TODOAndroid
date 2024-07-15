@@ -5,15 +5,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.databinding.MainBinding;
-import org.udg.pds.todoandroid.fragment.TaskList;
 
 // This is the main activity that contains the bottom navigation
 // This class SHOULD NOT BE CHANGED except for very specific features

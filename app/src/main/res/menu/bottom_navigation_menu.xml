@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-            android:id="@+id/action_home"
-            android:enabled="true"
-            android:icon="@drawable/ic_home_black_24dp"
-            android:title="@string/text_home"
-            app:showAsAction="ifRoom" />
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:title="@string/text_home"
+        app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/action_image"
-            android:checked="true"
-            android:enabled="true"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/text_image"
-            app:showAsAction="ifRoom" />
+        android:id="@+id/action_new_product"
+        android:enabled="true"
+        android:icon="@drawable/ic_nueva_receta"
+        android:title="@string/text_new_recipe"
+        app:showAsAction="ifRoom" />
     <item
-            android:id="@+id/action_tasks"
-            android:enabled="true"
-            android:icon="@drawable/ic_task_list_24dp"
-            android:title="@string/text_tasks"
-            app:showAsAction="ifRoom" />
+        android:id="@+id/action_favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite"
+        android:title="@string/text_favorites"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_profile"
+        android:enabled="true"
+        android:icon="@drawable/ic_profile_chef"
+        android:title="@string/text_profile"
+        app:showAsAction="ifRoom" />
 </menu>
