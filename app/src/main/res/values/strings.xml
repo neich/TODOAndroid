@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TODO</string>
+    
+    <!-- Splash Screen -->
+    <string name="splash_checking">Checking authentication…</string>
+    
+    <!-- Login Screen -->
+    <string name="login_title">Welcome</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="button_login">Sign In</string>
+    <string name="login_success">Login successful!</string>
+    
+    <!-- Errors -->
+    <string name="error_username_required">Username is required</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_login_failed">Invalid username or password</string>
+    <string name="error_network">Network error. Please try again.</string>
+    
+    <!-- Bottom Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="nav_profile">Profile</string>
+    
+    <!-- Home Fragment -->
+    <string name="home_welcome">Welcome!</string>
+    <string name="home_subtitle">This is your home screen</string>
+    
+    <!-- Tasks Fragment -->
+    <string name="tasks_title">My Tasks</string>
+    <string name="tasks_subtitle">Manage your tasks here</string>
+    <string name="no_tasks">No tasks yet</string>
+
+    <!-- Task Detail -->
+    <string name="task_detail_title">Task Details</string>
+    <string name="label_task_id">Task ID</string>
+    <string name="label_task_text">Description</string>
+    <string name="label_task_completed">Status</string>
+    <string name="label_task_date_created">Created On</string>
+    <string name="label_task_date_limit">Due Date</string>
+    <string name="label_task_user_id">User ID</string>
+    <string name="task_status_completed">Completed</string>
+    <string name="task_status_pending">Pending</string>
+
+    <!-- Profile Fragment -->
+    <string name="profile_title">Profile</string>
+    <string name="profile_subtitle">View and edit your profile</string>
+    <string name="action_logout">Logout</string>
+    <string name="logout_dialog_title">Logout</string>
+    <string name="logout_dialog_message">Are you sure you want to logout?</string>
+    <string name="logout_confirm">Logout</string>
+    <string name="logout_cancel">Cancel</string>
+    <string name="logout_success">Logged out successfully</string>
+    <string name="logout_error">Failed to logout. Please try again.</string>
+
+    <!-- Add Task -->
+    <string name="action_add_task">Add Task</string>
+    <string name="add_task_title">New Task</string>
+    <string name="hint_task_text">Task description</string>
+    <string name="hint_date_limit">Due date</string>
+    <string name="button_save_task">Save Task</string>
+    <string name="task_created_success">Task created successfully!</string>
+    <string name="error_task_text_required">Task description is required</string>
+    <string name="error_date_limit_required">Due date is required</string>
+    <string name="error_task_creation_failed">Failed to create task</string>
+</resources>

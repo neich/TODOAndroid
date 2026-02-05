@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="org.udg.pds.todoandroid.ui.HomeFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/tasksFragment"
+        android:name="org.udg.pds.todoandroid.ui.TasksFragment"
+        android:label="@string/nav_tasks"
+        tools:layout="@layout/fragment_tasks">
+
+        <action
+            android:id="@+id/action_tasksFragment_to_addTaskFragment"
+            app:destination="@id/addTaskFragment" />
+
+        <action
+            android:id="@+id/action_tasksFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="org.udg.pds.todoandroid.ui.ProfileFragment"
+        android:label="@string/nav_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/addTaskFragment"
+        android:name="org.udg.pds.todoandroid.ui.AddTaskFragment"
+        android:label="@string/add_task_title"
+        tools:layout="@layout/fragment_add_task" />
+
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="org.udg.pds.todoandroid.ui.TaskDetailFragment"
+        android:label="@string/task_detail_title"
+        tools:layout="@layout/fragment_task_detail">
+
+        <argument
+            android:name="taskText"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="taskCompleted"
+            app:argType="boolean"
+            android:defaultValue="false" />
+
+        <argument
+            android:name="taskDateCreated"
+            app:argType="string"
+            app:nullable="true" />
+
+        <argument
+            android:name="taskDateLimit"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+</navigation>
