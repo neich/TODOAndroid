@@ -39,7 +39,7 @@ public class UserRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     List<UserEntity> entities = new ArrayList<>();
                     for (UserDto dto : response.body()) {
-                        entities.add(new UserEntity(dto.id, dto.name, dto.email));
+                        entities.add(new UserEntity(dto.id, dto.username, dto.email));
                     }
                     Executors.newSingleThreadExecutor().execute(
                             () -> db.userDao().insertAll(entities)
