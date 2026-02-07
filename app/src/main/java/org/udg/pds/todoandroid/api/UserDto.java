@@ -7,8 +7,8 @@ public class UserDto {
     @SerializedName("id")
     public int id;
 
-    @SerializedName("name")
-    public String name;
+    @SerializedName("username")
+    public String username;
 
     @SerializedName("email")
     public String email;
