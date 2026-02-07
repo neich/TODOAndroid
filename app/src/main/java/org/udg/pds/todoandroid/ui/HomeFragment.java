@@ -16,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
     private FragmentHomeBinding binding;
 
     @Nullable
@@ -23,15 +24,16 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, 
                              @Nullable ViewGroup container, 
                              @Nullable Bundle savedInstanceState) {
+        android.util.Log.d(TAG, "onCreateView started");
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+        android.util.Log.d(TAG, "onCreateView completed");
         return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // TODO: Add your home content here
+        android.util.Log.d(TAG, "onViewCreated");
     }
 
     @Override
