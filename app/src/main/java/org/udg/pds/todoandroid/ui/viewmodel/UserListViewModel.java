@@ -1,4 +1,4 @@
-package org.udg.pds.todoandroid.ui;
+package org.udg.pds.todoandroid.ui.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -12,6 +12,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
+/**
+ * ViewModel for user list.
+ * Handles fetching and caching user data.
+ */
 @HiltViewModel
 public class UserListViewModel extends ViewModel {
 

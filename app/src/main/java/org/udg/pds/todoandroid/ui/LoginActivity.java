@@ -6,26 +6,18 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.api.ApiService;
-import org.udg.pds.todoandroid.api.LoginCredentials;
-import org.udg.pds.todoandroid.api.UserDto;
 import org.udg.pds.todoandroid.databinding.ActivityLoginBinding;
-
-import javax.inject.Inject;
+import org.udg.pds.todoandroid.ui.viewmodel.LoginViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @AndroidEntryPoint
 public class LoginActivity extends AppCompatActivity {
 
-    @Inject
-    ApiService apiService;
-
+    private LoginViewModel viewModel;
     private ActivityLoginBinding binding;
 
     @Override
@@ -34,7 +26,37 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(LoginViewModel.class);
+
+        // Setup observers
+        observeLoginResult();
+
         binding.buttonLogin.setOnClickListener(v -> performLogin());
+    }
+
+    private void observeLoginResult() {
+        viewModel.getLoginResult().observe(this, resource -> {
+            if (resource == null) return;
+
+            switch (resource.status) {
+                case LOADING:
+                    setLoading(true);
+                    break;
+                case SUCCESS:
+                    setLoading(false);
+                    Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
+                    navigateToMain();
+                    break;
+                case ERROR:
+                    setLoading(false);
+                    String errorMsg = resource.message != null && resource.message.contains("Network error")
+                            ? getString(R.string.error_network)
+                            : getString(R.string.error_login_failed);
+                    Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        });
     }
 
     private void performLogin() {
@@ -54,34 +76,8 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Show progress and disable button
-        setLoading(true);
-
-        LoginCredentials credentials = new LoginCredentials(username, password);
-        apiService.login(credentials).enqueue(new Callback<UserDto>() {
-            @Override
-            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
-                setLoading(false);
-                
-                if (response.isSuccessful() && response.body() != null) {
-                    // Login successful, navigate to main activity
-                    Toast.makeText(LoginActivity.this, 
-                        getString(R.string.login_success), Toast.LENGTH_SHORT).show();
-                    navigateToMain();
-                } else {
-                    // Login failed
-                    Toast.makeText(LoginActivity.this, 
-                        getString(R.string.error_login_failed), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserDto> call, Throwable t) {
-                setLoading(false);
-                Toast.makeText(LoginActivity.this, 
-                    getString(R.string.error_network), Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Trigger login via ViewModel
+        viewModel.login(username, password);
     }
 
     private void setLoading(boolean loading) {

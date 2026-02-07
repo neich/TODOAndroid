@@ -1,55 +1,65 @@
 package org.udg.pds.todoandroid.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.splashscreen.SplashScreen;
+import androidx.lifecycle.ViewModelProvider;
 
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.api.ApiService;
-import org.udg.pds.todoandroid.api.UserDto;
-
-import javax.inject.Inject;
+import org.udg.pds.todoandroid.ui.viewmodel.SplashViewModel;
 
 import dagger.hilt.android.AndroidEntryPoint;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 public class SplashActivity extends AppCompatActivity {
 
-    @Inject
-    ApiService apiService;
+    private SplashViewModel viewModel;
+    private boolean isCheckingAuth = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        // Install splash screen before calling super.onCreate()
+        SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
 
-        checkAuthenticationStatus();
+        super.onCreate(savedInstanceState);
+
+        // Keep the splash screen visible while checking authentication
+        splashScreen.setKeepOnScreenCondition(() -> isCheckingAuth);
+
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(SplashViewModel.class);
+
+        // Observe authentication status
+        observeAuthStatus();
+
+        // Check authentication
+        viewModel.checkAuthentication();
     }
 
-    private void checkAuthenticationStatus() {
-        apiService.checkSession().enqueue(new Callback<UserDto>() {
-            @Override
-            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
-                if (response.isSuccessful()) {
-                    // User is authenticated (200 with body or 204 No Content)
-                    navigateToMain();
-                } else {
-                    // Not authenticated (401, 403, etc.), go to login
-                    navigateToLogin();
-                }
-            }
+    private void observeAuthStatus() {
+        viewModel.getAuthStatus().observe(this, resource -> {
+            if (resource == null) return;
 
-            @Override
-            public void onFailure(Call<UserDto> call, Throwable t) {
-                // Network error or server not reachable, go to login
-                Toast.makeText(SplashActivity.this, 
-                    getString(R.string.error_network), Toast.LENGTH_SHORT).show();
-                navigateToLogin();
+            switch (resource.status) {
+                case LOADING:
+                    // Keep splash screen visible
+                    break;
+                case SUCCESS:
+                    isCheckingAuth = false;
+                    navigateToMain();
+                    break;
+                case ERROR:
+                    isCheckingAuth = false;
+                    if (resource.message != null && resource.message.contains("Network error")) {
+                        Toast.makeText(this, getString(R.string.error_network), Toast.LENGTH_SHORT).show();
+                    }
+                    navigateToLogin();
+                    break;
             }
         });
     }

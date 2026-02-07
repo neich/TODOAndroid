@@ -47,6 +47,11 @@
     <!-- Profile Fragment -->
     <string name="profile_title">Profile</string>
     <string name="profile_subtitle">View and edit your profile</string>
+    <string name="profile_user_id">User ID</string>
+    <string name="profile_user_name">Name</string>
+    <string name="profile_user_email">Email</string>
+    <string name="user_id_format">ID: %d</string>
+    <string name="profile_load_error">Failed to load profile</string>
     <string name="action_logout">Logout</string>
     <string name="logout_dialog_title">Logout</string>
     <string name="logout_dialog_message">Are you sure you want to logout?</string>

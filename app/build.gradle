@@ -18,6 +18,15 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lintOptions {
+        disable 'CustomSplashScreen'
+    }
 }
 
 dependencies {
@@ -48,7 +57,13 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.57.2"
     annotationProcessor "com.google.dagger:hilt-compiler:2.57.2"
 
+    // Hilt Navigation (for ViewModel support in fragments)
+    implementation "androidx.hilt:hilt-navigation-fragment:1.2.0"
+
+    // SplashScreen API
+    implementation "androidx.core:core-splashscreen:1.2.0"
+
     // Navigation Component
-    implementation "androidx.navigation:navigation-fragment:2.9.6"
-    implementation "androidx.navigation:navigation-ui:2.9.6"
+    implementation "androidx.navigation:navigation-fragment:2.9.7"
+    implementation "androidx.navigation:navigation-ui:2.9.7"
 }

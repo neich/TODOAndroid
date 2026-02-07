@@ -15,6 +15,9 @@ public interface ApiService {
     @GET("users/check")
     Call<UserDto> checkSession();
 
+    @GET("users/me")
+    Call<UserDto> getUserProfile();
+
     @POST("users/login")
     Call<UserDto> login(@Body LoginCredentials credentials);
 
