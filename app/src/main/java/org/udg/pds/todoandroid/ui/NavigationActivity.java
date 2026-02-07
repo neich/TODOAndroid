@@ -22,26 +22,37 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class NavigationActivity extends AppCompatActivity {
 
+    private static final String TAG = "NavigationActivity";
     private ActivityNavigationBinding binding;
     private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        android.util.Log.d(TAG, "onCreate started");
+
         binding = ActivityNavigationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        android.util.Log.d(TAG, "setContentView completed");
 
         setSupportActionBar(binding.toolbar);
+        android.util.Log.d(TAG, "setSupportActionBar completed");
 
         setupNavigation();
+        android.util.Log.d(TAG, "setupNavigation completed");
     }
 
     private void setupNavigation() {
+        android.util.Log.d(TAG, "setupNavigation started");
+
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.navHostFragment);
 
+        android.util.Log.d(TAG, "navHostFragment: " + (navHostFragment != null ? "found" : "NULL"));
+
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
+            android.util.Log.d(TAG, "navController obtained");
 
             // Define top-level destinations (no back button shown)
             Set<Integer> topLevelDestinations = new HashSet<>();
