@@ -14,32 +14,26 @@ import androidx.annotation.Nullable;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.api.ApiService;
 import org.udg.pds.todoandroid.api.TaskDto;
 import org.udg.pds.todoandroid.databinding.FragmentTasksBinding;
+import org.udg.pds.todoandroid.ui.viewmodel.TaskListViewModel;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @AndroidEntryPoint
 public class TasksFragment extends Fragment {
 
     private FragmentTasksBinding binding;
     private TaskAdapter adapter;
-
-    @Inject
-    ApiService apiService;
+    private TaskListViewModel viewModel;
 
     @Nullable
     @Override
@@ -54,16 +48,53 @@ public class TasksFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(TaskListViewModel.class);
+
         setupMenu();
         setupRecyclerView();
-        loadTasks();
+        observeTasks();
+
+        // Only load tasks if we don't already have data
+        if (viewModel.getTasks().getValue() == null) {
+            viewModel.loadTasks();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Reload tasks when returning from add/detail fragments
-        loadTasks();
+        // Only if viewModel is initialized
+        if (viewModel != null) {
+            viewModel.refreshTasks();
+        }
+    }
+
+    private void observeTasks() {
+        viewModel.getTasks().observe(getViewLifecycleOwner(), resource -> {
+            if (resource == null) return;
+
+            switch (resource.status) {
+                case LOADING:
+                    showLoading(true);
+                    break;
+                case SUCCESS:
+                    showLoading(false);
+                    List<TaskDto> tasks = resource.data;
+                    if (tasks == null || tasks.isEmpty()) {
+                        showEmpty(true);
+                    } else {
+                        showEmpty(false);
+                        adapter.submitList(tasks);
+                    }
+                    break;
+                case ERROR:
+                    showLoading(false);
+                    showError(resource.message != null ? resource.message : "Failed to load tasks");
+                    break;
+            }
+        });
     }
 
     private void setupMenu() {
@@ -114,34 +145,6 @@ public class TasksFragment extends Fragment {
                 .navigate(R.id.action_tasksFragment_to_taskDetailFragment, args);
     }
 
-    private void loadTasks() {
-        showLoading(true);
-
-        apiService.getTasks().enqueue(new Callback<List<TaskDto>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<TaskDto>> call,
-                                   @NonNull Response<List<TaskDto>> response) {
-                showLoading(false);
-                if (response.isSuccessful() && response.body() != null) {
-                    List<TaskDto> tasks = response.body();
-                    if (tasks.isEmpty()) {
-                        showEmpty(true);
-                    } else {
-                        showEmpty(false);
-                        adapter.submitList(tasks);
-                    }
-                } else {
-                    showError("Failed to load tasks");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<TaskDto>> call, @NonNull Throwable t) {
-                showLoading(false);
-                showError("Network error: " + t.getMessage());
-            }
-        });
-    }
 
     private void showLoading(boolean show) {
         binding.progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
