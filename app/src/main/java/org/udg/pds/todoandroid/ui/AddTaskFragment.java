@@ -11,35 +11,27 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
-import org.udg.pds.todoandroid.api.ApiService;
-import org.udg.pds.todoandroid.api.CreateTaskRequest;
-import org.udg.pds.todoandroid.api.IdDto;
 import org.udg.pds.todoandroid.databinding.FragmentAddTaskBinding;
+import org.udg.pds.todoandroid.ui.viewmodel.AddTaskViewModel;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import javax.inject.Inject;
-
 import dagger.hilt.android.AndroidEntryPoint;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @AndroidEntryPoint
 public class AddTaskFragment extends Fragment {
 
     private FragmentAddTaskBinding binding;
+    private AddTaskViewModel viewModel;
     private LocalDateTime selectedDateTime = LocalDateTime.now();
     private final DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy 'at' HH:mm z");
-
-    @Inject
-    ApiService apiService;
 
     @Nullable
     @Override
@@ -54,9 +46,37 @@ public class AddTaskFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(AddTaskViewModel.class);
+
         setupToolbar();
         setupDatePicker();
         setupSaveButton();
+        observeCreateTaskResult();
+    }
+
+    private void observeCreateTaskResult() {
+        viewModel.getCreateTaskResult().observe(getViewLifecycleOwner(), resource -> {
+            if (resource == null) return;
+
+            switch (resource.status) {
+                case LOADING:
+                    showLoading(true);
+                    break;
+                case SUCCESS:
+                    showLoading(false);
+                    Toast.makeText(requireContext(), R.string.task_created_success, Toast.LENGTH_SHORT).show();
+                    Navigation.findNavController(requireView()).navigateUp();
+                    break;
+                case ERROR:
+                    showLoading(false);
+                    String errorMsg = resource.message != null && resource.message.contains("Network error")
+                            ? getString(R.string.error_network)
+                            : getString(R.string.error_task_creation_failed);
+                    Toast.makeText(requireContext(), errorMsg, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        });
     }
 
     private void setupToolbar() {
@@ -138,27 +158,8 @@ public class AddTaskFragment extends Fragment {
         // Set dateCreated to current time
         ZonedDateTime dateCreated = ZonedDateTime.now(ZoneId.of("UTC"));
 
-        showLoading(true);
-
-        CreateTaskRequest request = new CreateTaskRequest(taskText, dateCreated, zonedDateLimit);
-        apiService.createTask(request).enqueue(new Callback<IdDto>() {
-            @Override
-            public void onResponse(@NonNull Call<IdDto> call, @NonNull Response<IdDto> response) {
-                showLoading(false);
-                if (response.isSuccessful()) {
-                    Toast.makeText(requireContext(), R.string.task_created_success, Toast.LENGTH_SHORT).show();
-                    Navigation.findNavController(requireView()).navigateUp();
-                } else {
-                    Toast.makeText(requireContext(), R.string.error_task_creation_failed, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<IdDto> call, @NonNull Throwable t) {
-                showLoading(false);
-                Toast.makeText(requireContext(), R.string.error_network, Toast.LENGTH_SHORT).show();
-            }
-        });
+        // Use ViewModel to create task
+        viewModel.createTask(taskText, dateCreated, zonedDateLimit);
     }
 
     private void showLoading(boolean show) {
