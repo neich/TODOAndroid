@@ -64,4 +64,10 @@ public class TaskListViewModel extends ViewModel {
     public void refreshTasks() {
         loadTasks();
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Release any resources if needed in the future
+    }
 }

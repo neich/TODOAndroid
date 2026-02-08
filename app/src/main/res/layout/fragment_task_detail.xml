@@ -28,72 +28,95 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Task Text -->
+            <!-- Task Text Label -->
             <TextView
+                android:id="@+id/labelTaskText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/label_task_text"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textTaskText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/labelTaskText"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Completed Status -->
+            <!-- Completed Status Label -->
             <TextView
+                android:id="@+id/labelTaskCompleted"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_task_completed"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/textTaskText"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textTaskCompleted"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/labelTaskCompleted"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Date Created -->
+            <!-- Date Created Label -->
             <TextView
+                android:id="@+id/labelTaskDateCreated"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_task_date_created"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/textTaskCompleted"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textTaskDateCreated"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/labelTaskDateCreated"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Date Limit -->
+            <!-- Date Limit Label -->
             <TextView
+                android:id="@+id/labelTaskDateLimit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_task_date_limit"
                 android:textStyle="bold"
-                android:textColor="?attr/colorPrimary" />
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintTop_toBottomOf="@id/textTaskDateCreated"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/textTaskDateLimit"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@id/labelTaskDateLimit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

@@ -31,4 +31,10 @@ public class UserListViewModel extends ViewModel {
     public LiveData<List<UserEntity>> getUsers() {
         return users;
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Release any resources if needed in the future
+    }
 }

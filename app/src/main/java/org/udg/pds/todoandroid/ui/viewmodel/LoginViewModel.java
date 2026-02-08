@@ -63,4 +63,10 @@ public class LoginViewModel extends ViewModel {
     public void resetLoginResult() {
         loginResult.setValue(null);
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Release any resources if needed in the future
+    }
 }

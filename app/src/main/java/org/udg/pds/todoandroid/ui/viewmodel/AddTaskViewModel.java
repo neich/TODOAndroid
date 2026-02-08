@@ -65,4 +65,10 @@ public class AddTaskViewModel extends ViewModel {
     public void resetCreateTaskResult() {
         createTaskResult.setValue(null);
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Release any resources if needed in the future
+    }
 }

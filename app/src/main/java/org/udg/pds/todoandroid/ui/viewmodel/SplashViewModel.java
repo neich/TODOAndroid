@@ -56,4 +56,10 @@ public class SplashViewModel extends ViewModel {
             }
         });
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        // Release any resources if needed in the future
+    }
 }
