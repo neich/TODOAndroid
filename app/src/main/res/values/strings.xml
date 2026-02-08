@@ -70,4 +70,7 @@
     <string name="error_task_text_required">Task description is required</string>
     <string name="error_date_limit_required">Due date is required</string>
     <string name="error_task_creation_failed">Failed to create task</string>
+
+    <!-- Common -->
+    <string name="loading">Loading…</string>
 </resources>
