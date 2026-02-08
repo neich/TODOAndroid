@@ -22,6 +22,7 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+        coreLibraryDesugaringEnabled true
     }
 
     lintOptions {
@@ -30,6 +31,8 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.5"
+
     implementation "androidx.appcompat:appcompat:1.7.1"
     implementation "com.google.android.material:material:1.13.0"
     implementation "androidx.constraintlayout:constraintlayout:2.2.1"
@@ -43,9 +46,11 @@ dependencies {
 
     // Room
     implementation "androidx.room:room-runtime:2.8.4"
-    implementation 'androidx.navigation:navigation-fragment:2.9.7'
-    implementation 'androidx.navigation:navigation-ui:2.9.7'
     annotationProcessor "androidx.room:room-compiler:2.8.4"
+
+    // Navigation Component
+    implementation "androidx.navigation:navigation-fragment:2.9.7"
+    implementation "androidx.navigation:navigation-ui:2.9.7"
 
     // Retrofit + Gson + OkHttp
     implementation "com.squareup.retrofit2:retrofit:3.0.0"
@@ -62,8 +67,4 @@ dependencies {
 
     // SplashScreen API
     implementation "androidx.core:core-splashscreen:1.2.0"
-
-    // Navigation Component
-    implementation "androidx.navigation:navigation-fragment:2.9.7"
-    implementation "androidx.navigation:navigation-ui:2.9.7"
 }
