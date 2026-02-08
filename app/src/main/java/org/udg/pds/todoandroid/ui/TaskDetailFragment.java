@@ -8,12 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.databinding.FragmentTaskDetailBinding;
+import org.udg.pds.todoandroid.ui.viewmodel.TaskDetailViewModel;
 
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -28,6 +29,7 @@ public class TaskDetailFragment extends Fragment {
     private static final String ARG_TASK_DATE_LIMIT = "taskDateLimit";
 
     private FragmentTaskDetailBinding binding;
+    private TaskDetailViewModel viewModel;
     private final DateTimeFormatter displayFormatter =
             DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy 'at' HH:mm z", Locale.getDefault());
 
@@ -44,8 +46,12 @@ public class TaskDetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize ViewModel
+        viewModel = new ViewModelProvider(this).get(TaskDetailViewModel.class);
+
         setupToolbar();
-        displayTaskDetails();
+        initializeTaskDetails();
+        observeTaskDetail();
     }
 
     private void setupToolbar() {
@@ -53,46 +59,47 @@ public class TaskDetailFragment extends Fragment {
                 Navigation.findNavController(v).navigateUp());
     }
 
-    private void displayTaskDetails() {
+    private void initializeTaskDetails() {
         Bundle args = getArguments();
         if (args == null) return;
 
-        String taskText = args.getString(ARG_TASK_TEXT);
-        boolean completed = args.getBoolean(ARG_TASK_COMPLETED, false);
-        String dateCreatedStr = args.getString(ARG_TASK_DATE_CREATED);
-        String dateLimitStr = args.getString(ARG_TASK_DATE_LIMIT);
+        // Only initialize if ViewModel doesn't have data (first load)
+        if (viewModel.getTaskDetail().getValue() == null) {
+            String taskText = args.getString(ARG_TASK_TEXT);
+            boolean completed = args.getBoolean(ARG_TASK_COMPLETED, false);
+            String dateCreatedStr = args.getString(ARG_TASK_DATE_CREATED);
+            String dateLimitStr = args.getString(ARG_TASK_DATE_LIMIT);
 
-        // Display task text
-        binding.textTaskText.setText(taskText != null ? taskText : "-");
-
-        // Display completed status
-        binding.textTaskCompleted.setText(completed ?
-                getString(R.string.task_status_completed) :
-                getString(R.string.task_status_pending));
-
-        // Display date created
-        if (dateCreatedStr != null && !dateCreatedStr.isEmpty()) {
-            try {
-                ZonedDateTime dateCreated = ZonedDateTime.parse(dateCreatedStr);
-                binding.textTaskDateCreated.setText(dateCreated.format(displayFormatter));
-            } catch (Exception e) {
-                binding.textTaskDateCreated.setText(dateCreatedStr);
-            }
-        } else {
-            binding.textTaskDateCreated.setText("-");
+            viewModel.setTaskDetails(taskText, completed, dateCreatedStr, dateLimitStr);
         }
+    }
 
-        // Display date limit
-        if (dateLimitStr != null && !dateLimitStr.isEmpty()) {
-            try {
-                ZonedDateTime dateLimit = ZonedDateTime.parse(dateLimitStr);
-                binding.textTaskDateLimit.setText(dateLimit.format(displayFormatter));
-            } catch (Exception e) {
-                binding.textTaskDateLimit.setText(dateLimitStr);
+    private void observeTaskDetail() {
+        viewModel.getTaskDetail().observe(getViewLifecycleOwner(), state -> {
+            if (state == null) return;
+
+            // Display task text
+            binding.textTaskText.setText(state.text != null ? state.text : "-");
+
+            // Display completed status
+            binding.textTaskCompleted.setText(state.completed ?
+                    getString(R.string.task_status_completed) :
+                    getString(R.string.task_status_pending));
+
+            // Display date created
+            if (state.dateCreated != null) {
+                binding.textTaskDateCreated.setText(state.dateCreated.format(displayFormatter));
+            } else {
+                binding.textTaskDateCreated.setText("-");
             }
-        } else {
-            binding.textTaskDateLimit.setText("-");
-        }
+
+            // Display date limit
+            if (state.dateLimit != null) {
+                binding.textTaskDateLimit.setText(state.dateLimit.format(displayFormatter));
+            } else {
+                binding.textTaskDateLimit.setText("-");
+            }
+        });
     }
 
     @Override
