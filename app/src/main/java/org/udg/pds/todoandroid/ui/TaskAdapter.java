@@ -2,16 +2,13 @@ package org.udg.pds.todoandroid.ui;
 
 import android.graphics.Paint;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.TextView;
+ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.api.TaskDto;
+import org.udg.pds.todoandroid.databinding.ItemTaskBinding;
 
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * RecyclerView Adapter for displaying task items.
+ * Uses View Binding for type-safe view access.
+ */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskVH> {
 
     public interface OnTaskClickListener {
@@ -48,37 +49,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskVH> {
     @NonNull
     @Override
     public TaskVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_task, parent, false);
-        return new TaskVH(v);
+        ItemTaskBinding binding = ItemTaskBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false);
+        return new TaskVH(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TaskVH holder, int position) {
         TaskDto task = items.get(position);
-        holder.textTitle.setText(task.text);
-
-        // Format the date limit
-        String formattedDate = formatDate(task.dateLimit);
-        holder.textDateLimit.setText(formattedDate != null ? "Due: " + formattedDate : "");
-
-        holder.checkCompleted.setChecked(task.completed);
-
-        // Strike through text if completed
-        if (task.completed) {
-            holder.textTitle.setPaintFlags(holder.textTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.textTitle.setAlpha(0.6f);
-        } else {
-            holder.textTitle.setPaintFlags(holder.textTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.textTitle.setAlpha(1.0f);
-        }
-
-        // Set click listener
-        holder.itemView.setOnClickListener(v -> {
-            if (clickListener != null) {
-                clickListener.onTaskClick(task);
-            }
-        });
+        holder.bind(task, clickListener, displayFormatter);
     }
 
     private String formatDate(ZonedDateTime dateTime) {
@@ -93,17 +72,44 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskVH> {
         return items.size();
     }
 
+    /**
+     * ViewHolder using View Binding for type-safe view access.
+     */
     static class TaskVH extends RecyclerView.ViewHolder {
 
-        TextView textTitle;
-        TextView textDateLimit;
-        CheckBox checkCompleted;
+        private final ItemTaskBinding binding;
 
-        TaskVH(@NonNull View itemView) {
-            super(itemView);
-            textTitle = itemView.findViewById(R.id.textTitle);
-            textDateLimit = itemView.findViewById(R.id.textDateLimit);
-            checkCompleted = itemView.findViewById(R.id.checkCompleted);
+        TaskVH(@NonNull ItemTaskBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        void bind(TaskDto task, OnTaskClickListener clickListener, DateTimeFormatter formatter) {
+            binding.textTitle.setText(task.text);
+
+            // Format the date limit
+            String formattedDate = task.dateLimit != null ? task.dateLimit.format(formatter) : null;
+            binding.textDateLimit.setText(formattedDate != null ? "Due: " + formattedDate : "");
+
+            binding.checkCompleted.setChecked(task.completed);
+
+            // Strike through text if completed
+            if (task.completed) {
+                binding.textTitle.setPaintFlags(
+                        binding.textTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                binding.textTitle.setAlpha(0.6f);
+            } else {
+                binding.textTitle.setPaintFlags(
+                        binding.textTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                binding.textTitle.setAlpha(1.0f);
+            }
+
+            // Set click listener
+            itemView.setOnClickListener(v -> {
+                if (clickListener != null) {
+                    clickListener.onTaskClick(task);
+                }
+            });
         }
     }
 }
