@@ -1,34 +1,31 @@
 package org.udg.pds.todoandroid.ui.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.udg.pds.todoandroid.api.ApiService;
 import org.udg.pds.todoandroid.api.UserDto;
+import org.udg.pds.todoandroid.data.AuthRepository;
 import org.udg.pds.todoandroid.util.Resource;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * ViewModel for SplashActivity.
- * Handles checking user authentication status.
+ * Handles checking user authentication status via AuthRepository.
  */
 @HiltViewModel
 public class SplashViewModel extends ViewModel {
 
-    private final ApiService apiService;
-    private final MutableLiveData<Resource<UserDto>> authStatus = new MutableLiveData<>();
+    private final AuthRepository authRepository;
+    private final MediatorLiveData<Resource<UserDto>> authStatus = new MediatorLiveData<>();
+    private LiveData<Resource<UserDto>> currentSource;
 
     @Inject
-    public SplashViewModel(ApiService apiService) {
-        this.apiService = apiService;
+    public SplashViewModel(AuthRepository authRepository) {
+        this.authRepository = authRepository;
     }
 
     public LiveData<Resource<UserDto>> getAuthStatus() {
@@ -36,30 +33,23 @@ public class SplashViewModel extends ViewModel {
     }
 
     public void checkAuthentication() {
-        authStatus.setValue(Resource.loading(null));
+        // Remove previous source if exists
+        if (currentSource != null) {
+            authStatus.removeSource(currentSource);
+        }
 
-        apiService.checkSession().enqueue(new Callback<UserDto>() {
-            @Override
-            public void onResponse(@NonNull Call<UserDto> call, @NonNull Response<UserDto> response) {
-                if (response.isSuccessful()) {
-                    // User is authenticated (200 with body or 204 No Content)
-                    authStatus.setValue(Resource.success(response.body()));
-                } else {
-                    // Not authenticated (401, 403, etc.)
-                    authStatus.setValue(Resource.error("Not authenticated", null));
-                }
-            }
+        // Get new source from repository
+        currentSource = authRepository.checkAuthentication();
 
-            @Override
-            public void onFailure(@NonNull Call<UserDto> call, @NonNull Throwable t) {
-                authStatus.setValue(Resource.error("Network error: " + t.getMessage(), null));
-            }
-        });
+        // Add as source to mediator
+        authStatus.addSource(currentSource, resource -> authStatus.setValue(resource));
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        // Release any resources if needed in the future
+        if (currentSource != null) {
+            authStatus.removeSource(currentSource);
+        }
     }
 }
