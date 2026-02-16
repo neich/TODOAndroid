@@ -1,12 +1,11 @@
 package org.udg.pds.todoandroid.ui.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.udg.pds.todoandroid.api.ApiService;
 import org.udg.pds.todoandroid.api.TaskDto;
+import org.udg.pds.todoandroid.data.TaskRepository;
 import org.udg.pds.todoandroid.util.Resource;
 
 import java.util.List;
@@ -14,23 +13,22 @@ import java.util.List;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * ViewModel for TasksFragment.
  * Handles loading and displaying the list of tasks.
+ * Uses TaskRepository as the data source (Repository pattern).
  */
 @HiltViewModel
 public class TaskListViewModel extends ViewModel {
 
-    private final ApiService apiService;
-    private final MutableLiveData<Resource<List<TaskDto>>> tasks = new MutableLiveData<>();
+    private final TaskRepository taskRepository;
+    private final MediatorLiveData<Resource<List<TaskDto>>> tasks = new MediatorLiveData<>();
+    private LiveData<Resource<List<TaskDto>>> currentSource;
 
     @Inject
-    public TaskListViewModel(ApiService apiService) {
-        this.apiService = apiService;
+    public TaskListViewModel(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     public LiveData<Resource<List<TaskDto>>> getTasks() {
@@ -38,24 +36,16 @@ public class TaskListViewModel extends ViewModel {
     }
 
     public void loadTasks() {
-        tasks.setValue(Resource.loading(null));
+        // Remove previous source if exists
+        if (currentSource != null) {
+            tasks.removeSource(currentSource);
+        }
 
-        apiService.getTasks().enqueue(new Callback<List<TaskDto>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<TaskDto>> call,
-                                   @NonNull Response<List<TaskDto>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    tasks.setValue(Resource.success(response.body()));
-                } else {
-                    tasks.setValue(Resource.error("Failed to load tasks", null));
-                }
-            }
+        // Get new source from repository
+        currentSource = taskRepository.getTasks();
 
-            @Override
-            public void onFailure(@NonNull Call<List<TaskDto>> call, @NonNull Throwable t) {
-                tasks.setValue(Resource.error("Network error: " + t.getMessage(), null));
-            }
-        });
+        // Add as source to mediator
+        tasks.addSource(currentSource, resource -> tasks.setValue(resource));
     }
 
     /**
@@ -68,6 +58,9 @@ public class TaskListViewModel extends ViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
-        // Release any resources if needed in the future
+        // Remove source to prevent memory leaks
+        if (currentSource != null) {
+            tasks.removeSource(currentSource);
+        }
     }
 }
