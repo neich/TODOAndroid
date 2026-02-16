@@ -1,13 +1,12 @@
 package org.udg.pds.todoandroid.ui.viewmodel;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.ViewModel;
 
-import org.udg.pds.todoandroid.api.ApiService;
 import org.udg.pds.todoandroid.api.CreateTaskRequest;
 import org.udg.pds.todoandroid.api.IdDto;
+import org.udg.pds.todoandroid.data.TaskRepository;
 import org.udg.pds.todoandroid.util.Resource;
 
 import java.time.ZonedDateTime;
@@ -15,23 +14,21 @@ import java.time.ZonedDateTime;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * ViewModel for AddTaskFragment.
- * Handles creating new tasks.
+ * Handles creating new tasks via TaskRepository.
  */
 @HiltViewModel
 public class AddTaskViewModel extends ViewModel {
 
-    private final ApiService apiService;
-    private final MutableLiveData<Resource<IdDto>> createTaskResult = new MutableLiveData<>();
+    private final TaskRepository taskRepository;
+    private final MediatorLiveData<Resource<IdDto>> createTaskResult = new MediatorLiveData<>();
+    private LiveData<Resource<IdDto>> currentSource;
 
     @Inject
-    public AddTaskViewModel(ApiService apiService) {
-        this.apiService = apiService;
+    public AddTaskViewModel(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     public LiveData<Resource<IdDto>> getCreateTaskResult() {
@@ -39,36 +36,35 @@ public class AddTaskViewModel extends ViewModel {
     }
 
     public void createTask(String text, ZonedDateTime dateCreated, ZonedDateTime dateLimit) {
-        createTaskResult.setValue(Resource.loading(null));
+        // Remove previous source if exists
+        if (currentSource != null) {
+            createTaskResult.removeSource(currentSource);
+        }
 
+        // Create request and get source from repository
         CreateTaskRequest request = new CreateTaskRequest(text, dateCreated, dateLimit);
-        apiService.createTask(request).enqueue(new Callback<IdDto>() {
-            @Override
-            public void onResponse(@NonNull Call<IdDto> call, @NonNull Response<IdDto> response) {
-                if (response.isSuccessful()) {
-                    createTaskResult.setValue(Resource.success(response.body()));
-                } else {
-                    createTaskResult.setValue(Resource.error("Failed to create task", null));
-                }
-            }
+        currentSource = taskRepository.createTask(request);
 
-            @Override
-            public void onFailure(@NonNull Call<IdDto> call, @NonNull Throwable t) {
-                createTaskResult.setValue(Resource.error("Network error: " + t.getMessage(), null));
-            }
-        });
+        // Add as source to mediator
+        createTaskResult.addSource(currentSource, resource -> createTaskResult.setValue(resource));
     }
 
     /**
      * Reset the result state
      */
     public void resetCreateTaskResult() {
+        if (currentSource != null) {
+            createTaskResult.removeSource(currentSource);
+            currentSource = null;
+        }
         createTaskResult.setValue(null);
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        // Release any resources if needed in the future
+        if (currentSource != null) {
+            createTaskResult.removeSource(currentSource);
+        }
     }
 }
