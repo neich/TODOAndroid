@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import org.udg.pds.todoandroid.R;
 import org.udg.pds.todoandroid.databinding.FragmentTaskDetailBinding;
@@ -49,15 +48,10 @@ public class TaskDetailFragment extends Fragment {
         // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(TaskDetailViewModel.class);
 
-        setupToolbar();
         initializeTaskDetails();
         observeTaskDetail();
     }
 
-    private void setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener(v ->
-                Navigation.findNavController(v).navigateUp());
-    }
 
     private void initializeTaskDetails() {
         Bundle args = getArguments();
