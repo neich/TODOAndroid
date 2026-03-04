@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -50,66 +48,31 @@ public class NavigationActivity extends AppCompatActivity {
 
         android.util.Log.d(TAG, "navHostFragment: " + (navHostFragment != null ? "found" : "NULL"));
 
-        if (navHostFragment != null) {
-            navController = navHostFragment.getNavController();
-            android.util.Log.d(TAG, "navController obtained");
+        if (navHostFragment == null) return;
 
-            // Define top-level destinations (no back button shown)
-            Set<Integer> topLevelDestinations = new HashSet<>();
-            topLevelDestinations.add(R.id.homeFragment);
-            topLevelDestinations.add(R.id.tasksFragment);
-            topLevelDestinations.add(R.id.profileFragment);
+        navController = navHostFragment.getNavController();
+        android.util.Log.d(TAG, "navController obtained");
 
-            AppBarConfiguration appBarConfiguration =
-                    new AppBarConfiguration.Builder(topLevelDestinations).build();
+        // Define top-level destinations (bottom nav visible, no Up button)
+        Set<Integer> topLevelDestinations = new HashSet<>();
+        topLevelDestinations.add(R.id.homeFragment);
+        topLevelDestinations.add(R.id.tasksFragment);
+        topLevelDestinations.add(R.id.profileFragment);
 
-            // Setup toolbar with NavController
-            NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        AppBarConfiguration appBarConfiguration =
+                new AppBarConfiguration.Builder(topLevelDestinations).build();
 
-            // Setup bottom navigation with NavController
-            NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
+        // Single activity toolbar manages title and Up button for all fragments
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-            // Listen for destination changes to hide/show bottom nav and toolbar
-            navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-                int destId = destination.getId();
+        // Bottom navigation synced with NavController
+        NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
 
-                // Hide bottom nav and main toolbar for detail fragments (they have their own toolbar)
-                if (destId == R.id.addTaskFragment || destId == R.id.taskDetailFragment) {
-                    binding.bottomNavigation.setVisibility(View.GONE);
-                    binding.appBarLayout.setVisibility(View.GONE);
-                    updateFragmentConstraints(true);
-                } else {
-                    binding.bottomNavigation.setVisibility(View.VISIBLE);
-                    binding.appBarLayout.setVisibility(View.VISIBLE);
-                    updateFragmentConstraints(false);
-                }
-            });
-
-            // Ensure the correct item is selected on startup
-            binding.bottomNavigation.setSelectedItemId(R.id.homeFragment);
-        }
-    }
-
-    private void updateFragmentConstraints(boolean fullScreen) {
-        ConstraintLayout constraintLayout = (ConstraintLayout) binding.getRoot();
-        ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayout);
-
-        if (fullScreen) {
-            // Fragment takes full screen
-            constraintSet.connect(R.id.navHostFragment, ConstraintSet.TOP,
-                    ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-            constraintSet.connect(R.id.navHostFragment, ConstraintSet.BOTTOM,
-                    ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM);
-        } else {
-            // Fragment constrained between appbar and bottom nav
-            constraintSet.connect(R.id.navHostFragment, ConstraintSet.TOP,
-                    R.id.appBarLayout, ConstraintSet.BOTTOM);
-            constraintSet.connect(R.id.navHostFragment, ConstraintSet.BOTTOM,
-                    R.id.bottomNavigation, ConstraintSet.TOP);
-        }
-
-        constraintSet.applyTo(constraintLayout);
+        // Hide bottom nav for non-top-level destinations (detail/add screens)
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            boolean isTopLevel = topLevelDestinations.contains(destination.getId());
+            binding.bottomNavigation.setVisibility(isTopLevel ? View.VISIBLE : View.GONE);
+        });
     }
 
     @Override

@@ -49,7 +49,6 @@ public class AddTaskFragment extends Fragment {
         // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(AddTaskViewModel.class);
 
-        setupToolbar();
         setupDatePicker();
         setupSaveButton();
         observeCreateTaskResult();
@@ -79,10 +78,6 @@ public class AddTaskFragment extends Fragment {
         });
     }
 
-    private void setupToolbar() {
-        binding.toolbar.setNavigationOnClickListener(v ->
-                Navigation.findNavController(v).navigateUp());
-    }
 
     private void setupDatePicker() {
         binding.editTextDateLimit.setOnClickListener(v -> showDatePicker());
@@ -133,8 +128,10 @@ public class AddTaskFragment extends Fragment {
     }
 
     private void saveTask() {
-        String taskText = binding.editTextTaskText.getText().toString().trim();
-        String dateLimit = binding.editTextDateLimit.getText().toString().trim();
+        String taskText = binding.editTextTaskText.getText() != null
+                ? binding.editTextTaskText.getText().toString().trim() : "";
+        String dateLimit = binding.editTextDateLimit.getText() != null
+                ? binding.editTextDateLimit.getText().toString().trim() : "";
 
         // Validation
         if (taskText.isEmpty()) {
