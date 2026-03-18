@@ -58,6 +58,7 @@ public class NavigationActivity extends AppCompatActivity {
         topLevelDestinations.add(R.id.homeFragment);
         topLevelDestinations.add(R.id.tasksFragment);
         topLevelDestinations.add(R.id.profileFragment);
+        topLevelDestinations.add(R.id.groupsFragment);
 
         AppBarConfiguration appBarConfiguration =
                 new AppBarConfiguration.Builder(topLevelDestinations).build();

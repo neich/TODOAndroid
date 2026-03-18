@@ -29,4 +29,10 @@ public interface ApiService {
 
     @POST("users/logout")
     Call<Void> logout();
+
+    @GET("users/me/groups_owned")
+    Call<List<GroupDto>> getGroupsOwned();
+
+    @GET("users/me/groups_member")
+    Call<List<GroupDto>> getGroupsMember();
 }
