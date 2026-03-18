@@ -73,4 +73,8 @@
 
     <!-- Common -->
     <string name="loading">Loading…</string>
+
+    <!-- Groups -->
+    <string name="nav_groups">Groups</string>
+    <string name="no_groups">No groups yet</string>
 </resources>
