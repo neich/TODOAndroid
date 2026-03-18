@@ -45,7 +45,7 @@ public class TaskListViewModel extends ViewModel {
         currentSource = taskRepository.getTasks();
 
         // Add as source to mediator
-        tasks.addSource(currentSource, resource -> tasks.setValue(resource));
+        tasks.addSource(currentSource, tasks::setValue);
     }
 
     /**
